@@ -15,7 +15,7 @@ that is going to be validated. This is done by wrapping the input elements/compo
 inside a react component that is decorated with *@validationComponent* decorator. 
 
 ```
-import { validationComponent } from 'reaect-validation-provider';
+import { validationComponent } from 'react-validation-provider';
 
 @validationComponent
 export default class TextInput extends React.Component {
@@ -29,7 +29,7 @@ export default class TextInput extends React.Component {
 
 ```
 //alternative without using decorator
-import { validationComponent } from 'reaect-validation-provider';
+import { validationComponent } from 'react-validation-provider';
 
 class TextInput extends React.Component {
     render() {
@@ -83,9 +83,11 @@ import { validationContext } from 'react-validation-provider';
 export default class MyForm extends React.Component {
    render() {
        return( 
-           //form elements here
+           <div>
+               //form elements here
 
-           <button disabled={!this.props.isValid} onClick={() => this.submitMyForm()}>Submit</button>
+               <button disabled={!this.props.isValid} onClick={() => this.submitMyForm()}>Submit</button>
+           </div>
        );
 
    }
