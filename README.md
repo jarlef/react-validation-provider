@@ -48,14 +48,14 @@ Afterwards you simply place these components inside your form components
     <label>Name</label>
     <TextInput value={this.state.name}
                onChange={(ev) => this.setState({name: ev.target.value})}
-               rule={[required]}
+               rules={[required]}
     <label>Year</label>
     <TextInput value={this.state.year}
                onChange={(ev) => this.setState({year: ev.target.value})}
-               rule={[required, year]}
+               rules={[required, year]}
 ``` 
 
-The rule prop is a special prop used by the validation component to validate 
+The rules prop is a special prop used by the validation component to validate 
 the value prop of the wrapped component. The rules are simply implemented by 
 defining and object with a validation expression and a message hint method.
 
