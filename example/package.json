@@ -1,0 +1,33 @@
+{
+  "name": "react-validation-provider-demo",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node server.js",
+    "lint": "eslint src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-loader": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "babel-preset-stage-0": "*",
+    "css-loader": "^0.25.0",
+    "eslint": "*",
+    "eslint-plugin-react": "*",
+    "file-loader": "^0.9.0",
+    "react-hot-loader": "*",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "*",
+    "webpack-dev-server": "*"
+  },
+  "dependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.5.0",
+    "eslint-plugin-react": "^6.2.2",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1"
+  }
+}

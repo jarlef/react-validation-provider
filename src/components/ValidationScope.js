@@ -1,12 +1,19 @@
 import React from 'react';
 
-export default function validationContext(Component) {
+const defaultProps = {
+    manual: false
+};
 
-    class ValidationContext extends React.Component {
+export default function validationScope(Component, options = {}) {
+
+    options = Object.assign({}, defaultProps, options);
+
+    class ValidationScope extends React.Component {
 
         constructor(props) {
             super(props);
 
+            this.enabled = true;
             this.state = { isValid: true };
             this.components = [];
         }
@@ -37,7 +44,8 @@ export default function validationContext(Component) {
             const validationContext = {
                 register: (component) => this.register(component), 
                 unregister: (component) => this.unregister(component),
-                update: () => this.update()
+                update: () => this.update(),
+                enabled: this.enabled
             };
             
             return {
@@ -46,15 +54,32 @@ export default function validationContext(Component) {
         }
 
         render(){
+            const validation = {
+                valid: this.state.isValid,
+                validate: (onSuccess) => {
+                    this.components.forEach(c => c.checkValid());
+                    this.update();
+
+                    if(this.state.isValid && onSuccess) {
+                        onSuccess();
+                    } 
+                    
+                    if(!this.state.isValid) {
+                        //scroll to component here
+                        console.log("scroll to element");
+                    }
+
+                }
+            }
             return (
-                <Component {...this.props} isValid={this.state.isValid} />
+                <Component {...this.props} validation={validation} />
             );
         }
     }
 
-    ValidationContext.childContextTypes = {
+    ValidationScope.childContextTypes = {
         validation: React.PropTypes.object
     };
 
-    return ValidationContext;
+    return ValidationScope;
 }

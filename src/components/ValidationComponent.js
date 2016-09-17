@@ -1,7 +1,5 @@
 import React from 'react';
 
-const suppress = () => {};
-
 const isFunction = (x) => {
  return typeof x  === "function"
 }
@@ -21,7 +19,7 @@ export default function validationComponent(Component) {
         }
 
         componentWillReceiveProps(nextProps) {
-            if(this.props.value !== nextProps.value) {
+            if(this.props.value !== nextProps.value && (!this.context.validation || this.context.validation.enabled)) {
                 this.validate(nextProps.value);
             }
         }
@@ -31,7 +29,10 @@ export default function validationComponent(Component) {
                 this.context.validation.register(this);
             }
             
-            this.validate(this.props.value);
+            if(!this.context.validation || this.context.validation.enabled)
+            {
+                this.validate(this.props.value);
+            }
         }
 
         componentWillUnmount() {
@@ -40,23 +41,30 @@ export default function validationComponent(Component) {
             }
         }
 
-        validate(value) {
+        checkValid() {
+            this.validate(this.props.value);
+        }
+
+        validate(value) {           
+
             let valid = true;
             let errorMessage = null;
 
-            for (var i = 0; this.props.rules && i < this.props.rules.length; i++) {
-                let rule = this.props.rules[i];
-                
-                if(isFunction(rule))
-                {
-                    rule = rule();
-                }
-                
-                valid = !!rule.validate(value);
+            if(this.props.rules) {
+                for (var i = 0; i < this.props.rules.length; i++) {
+                    let rule = this.props.rules[i];
+                    
+                    if(isFunction(rule))
+                    {
+                        rule = rule();
+                    }
+                    
+                    valid = !!rule.validate(value);
 
-                if(!valid) {
-                    errorMessage = rule.hint(value);
-                    break;
+                    if(!valid) {
+                        errorMessage = rule.hint(value);
+                        break;
+                    }
                 }
             }
 
@@ -71,23 +79,11 @@ export default function validationComponent(Component) {
       
         render() {
 
-            let error = null
-            
-            if(!this.state.valid) {
-                error = (
-                    <span className="form-element-error">
-                        * {this.state.errorMessage}
-                    </span>
-                );
-            };
-
             const { rules, ...componentProps } = this.props;
-            suppress(rules); //prevent linter warning
+            const validation = { rules, valid: this.state.valid, errorMessage: this.state.errorMessage };
+            
             return (
-                <span>
-                    <Component {...componentProps} />
-                    {error}                 
-                </span>
+                <Component props={componentProps} validation={validation} />
             )
         }
     }
