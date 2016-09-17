@@ -1,20 +1,28 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import scrollToElement from 'scroll-to-element';
 
-const defaultProps = {
-    manual: false
+const defaultOptions = {
+    manual: false,
+    scroll: true,
+    scrollOffset: 0,
+    scrollEffect: "out-back",
+    scollDuration: 1500 
 };
 
-export default function validationScope(Component, options = {}) {
+export default function scope(Component, options = {}) {
 
-    options = Object.assign({}, defaultProps, options);
+    options = Object.assign({}, defaultOptions, options);
 
     class ValidationScope extends React.Component {
 
         constructor(props) {
             super(props);
 
-            this.enabled = true;
-            this.state = { isValid: true };
+            this.enabled = !options.manual;
+            this.isValid = true;
+
+            this.state = { isValid: this.isValid };
             this.components = [];
         }
 
@@ -37,6 +45,7 @@ export default function validationScope(Component, options = {}) {
 
         update() {        
             const isValid = this.components.every(c => !!c.valid);
+            this.isValid = isValid;
             this.setState({isValid});            
         }
 
@@ -45,7 +54,7 @@ export default function validationScope(Component, options = {}) {
                 register: (component) => this.register(component), 
                 unregister: (component) => this.unregister(component),
                 update: () => this.update(),
-                enabled: this.enabled
+                isEnabled: () => this.enabled
             };
             
             return {
@@ -56,17 +65,28 @@ export default function validationScope(Component, options = {}) {
         render(){
             const validation = {
                 valid: this.state.isValid,
-                validate: (onSuccess) => {
+                validate: (onSuccess, onFailed) => {
+                    this.enabled = true;
                     this.components.forEach(c => c.checkValid());
-                    this.update();
-
-                    if(this.state.isValid && onSuccess) {
+                   
+                    if(this.isValid && onSuccess) {
                         onSuccess();
                     } 
+
+                    if(this.isValid && onFailed) {
+                        onFailed();
+                    }
                     
-                    if(!this.state.isValid) {
-                        //scroll to component here
-                        console.log("scroll to element");
+                    if(!this.isValid && options.scroll) {
+                        const component = this.components[0];
+                        const element = ReactDOM.findDOMNode(component);
+
+                        scrollToElement(element, {
+                            offset: options.scrollOffset,
+                            ease: options.scrollEffect,
+                            duration: options.scrollDuration
+                        });
+
                     }
 
                 }

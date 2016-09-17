@@ -1,4 +1,4 @@
-import validate from './components/ValidationComponent';
-import scope from './components/ValidationScope';
+import validate from './validate';
+import scope from './scope';
 
 export { validate, scope };

@@ -4,7 +4,7 @@ const isFunction = (x) => {
  return typeof x  === "function"
 }
 
-export default function validationComponent(Component) {
+export default function validate(Component) {
     class ValidationComponent extends React.Component {
 
         constructor(props) {
@@ -19,7 +19,7 @@ export default function validationComponent(Component) {
         }
 
         componentWillReceiveProps(nextProps) {
-            if(this.props.value !== nextProps.value && (!this.context.validation || this.context.validation.enabled)) {
+            if(this.props.value !== nextProps.value && (!this.context.validation || this.context.validation.isEnabled())) {
                 this.validate(nextProps.value);
             }
         }
@@ -29,7 +29,7 @@ export default function validationComponent(Component) {
                 this.context.validation.register(this);
             }
             
-            if(!this.context.validation || this.context.validation.enabled)
+            if(!this.context.validation || this.context.validation.isEnabled())
             {
                 this.validate(this.props.value);
             }

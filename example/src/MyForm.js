@@ -1,12 +1,13 @@
 import React from 'react';
 import './MyForm.css';
-import { scope } from '../../src';
+import { manualScope } from './scopes';
 import TextInput from './components/TextInput';
 import SelectBox from './components/SelectBox';
 import { required, email } from './rules';
 import SubForm from './SubForm';
 
-class MyForm extends React.Component {
+@manualScope
+export default class MyForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -65,5 +66,3 @@ class MyForm extends React.Component {
         )
     }
 }
-
-export default scope(MyForm, { manual: true });
