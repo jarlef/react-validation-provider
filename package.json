@@ -29,6 +29,7 @@
     "babel-preset-react": "^6.11.1"
   },
   "dependencies": {
+    "hoist-non-react-statics": "^1.2.0",
     "scroll-to-element": "^2.0.0"
   }
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 import './MyForm.css';
-import { manualScope } from './scopes';
+import { customScope } from './scopes';
 import TextInput from './components/TextInput';
 import SelectBox from './components/SelectBox';
 import { required, email } from './rules';
 import SubForm from './SubForm';
 
-@manualScope
+@customScope
 export default class MyForm extends React.Component {
 
     constructor(props) {

@@ -2,15 +2,14 @@ import React from 'react';
 import { validate } from '../../../src';
 import Error from './Error';
 
-class SelectBox extends React.Component {
+@validate({ custom: true })
+export default class SelectBox extends React.Component {
     render() {
         return (
               <div>
-                    <select {...this.props.props} />
+                    <select {...this.props.componentProps} />
                     <Error validation={this.props.validation} />
                 </div>
             );
     }
 }
-
-export default validate(SelectBox);

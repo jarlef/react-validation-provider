@@ -1,16 +1,12 @@
 import React from 'react';
-import { validate } from '../../../src';
+import { validate, simple } from '../../../src';
 import Error from './Error';
 
-class Input extends React.Component {
+@validate()
+export default class TextInput extends React.Component {
     render() {
         return  ( 
-            <div>
-                <input type='text' {...this.props.props} />
-                <Error validation={this.props.validation} />
-            </div>
+            <input type='text' {...this.props} />           
         );
     }
 }
-
-export default validate(Input);

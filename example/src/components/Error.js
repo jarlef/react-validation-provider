@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Error extends React.Component {
+export default class Error extends React.PureComponent {
     render() {
 
         if(this.props.validation.valid) {
@@ -9,7 +9,7 @@ export default class Error extends React.Component {
 
         return  ( 
             <div className="form-element-error">
-                {this.props.validation.errorMessage}
+                * {this.props.validation.errorMessage}
             </div>
         );
     }

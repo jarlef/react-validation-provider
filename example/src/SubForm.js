@@ -2,10 +2,10 @@ import React from 'react';
 import './MyForm.css';
 
 import TextInput from './components/TextInput';
-import { required, minimumLength } from './rules';
+import { required, minimumLength, somethingAsync } from './rules';
 import { validate } from '../../src';
 
-const Password = validate((props) => <input type="password" {...props.props} />);
+const Password = validate()((props) => <input type="password" {...props} />);
       
 export default class MyForm extends React.Component {
 

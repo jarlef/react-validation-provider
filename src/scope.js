@@ -10,11 +10,14 @@ const defaultOptions = {
     scollDuration: 1500 
 };
 
-export default function scope(Component, options = {}) {
+const scope = (WrappedComponent, options) => {
 
-    options = Object.assign({}, defaultOptions, options);
 
-    class ValidationScope extends React.Component {
+    return class ValidationScope extends React.Component {
+
+        static childContextTypes = {
+            validation: React.PropTypes.object
+        };
 
         constructor(props) {
             super(props);
@@ -68,7 +71,7 @@ export default function scope(Component, options = {}) {
                 validate: (onSuccess, onFailed) => {
                     this.enabled = true;
                     this.components.forEach(c => c.checkValid());
-                   
+                
                     if(this.isValid && onSuccess) {
                         onSuccess();
                     } 
@@ -92,14 +95,14 @@ export default function scope(Component, options = {}) {
                 }
             }
             return (
-                <Component {...this.props} validation={validation} />
+                <WrappedComponent {...this.props} validation={validation} />
             );
         }
     }
+}
 
-    ValidationScope.childContextTypes = {
-        validation: React.PropTypes.object
-    };
+export default (options = {}) => {
+    const mergedOptions = Object.assign({}, defaultOptions, options);
 
-    return ValidationScope;
+    return (WrappedComponent) => scope(WrappedComponent, mergedOptions);
 }
