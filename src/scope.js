@@ -25,21 +25,20 @@ const scope = (WrappedComponent, options) => {
             this.enabled = !this.options.manual;
             this.isValid = true;
 
-            this.state = { isValid: this.isValid };
             this.components = [];
-            this.triggers = [];
+            this.subscribers = [];
         }
 
         componentWillMount() {
             this.update();
         }
 
-        register(componenent) {
+        registerComponent(componenent) {
             this.components.push(componenent);
             this.update();
         }
 
-        unregister(component) {
+        unregisterComponent(component) {
             const index = this.components.indexOf(component);
             if(index > -1) {
                 this.components.splice(index, 1);
@@ -47,17 +46,30 @@ const scope = (WrappedComponent, options) => {
             }
         }
 
+         registerSubscriber(subscriber) {
+            this.subscribers.push(subscriber);
+            subscriber.setIsValid(this.isValid);
+        }
+
+        unregisterComponent(subscriber) {
+            const index = this.subscribers.indexOf(subscriber);
+            if(index > -1) {
+                this.subscribers.splice(index, 1);
+            }
+        }
+
         update() {        
             const isValid = this.components.every(c => !!c.valid);
             this.isValid = isValid;
-            this.setState({isValid});  
-              
+            this.subscribers.forEach(s => s.setIsValid(isValid));              
         }
 
         getChildContext() {
             const validationContext = {
-                register: (component) => this.register(component), 
-                unregister: (component) => this.unregister(component),
+                registerComponent: (component) => this.registerComponent(component), 
+                unregisterComponent: (component) => this.unregisterComponent(component), 
+                registerSubscriber: (subscriber) => this.registerSubscriber(subscriber), 
+                unregisterSubscriber: (subscriber) => this.unregisterSubscriber(subscriber),
                 update: () => this.update(),
                 validate: (onSuccess, onFailed) => {
                     this.validate(onSuccess, onFailed);
@@ -83,7 +95,7 @@ const scope = (WrappedComponent, options) => {
             }
             
             if(!this.isValid && this.options.scroll) {
-                const component = this.components[0];
+                const component = this.components.filter(c => !!c.valid)[0];
                 const element = ReactDOM.findDOMNode(component);
 
                 scrollToElement(element, {
@@ -94,15 +106,10 @@ const scope = (WrappedComponent, options) => {
             }  
         } 
 
-        render(){
-            const validation = {
-                valid: this.state.isValid,
-                validate: (onSuccess, onFailed) => {
-                    this.validate(onSuccess, onFailed);
-                }
-            }
+        render() {
+
             return (
-                <WrappedComponent {...this.props} validation={validation} />
+                <WrappedComponent {...this.props} />
             );
         }
     }

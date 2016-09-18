@@ -22,8 +22,6 @@ export default class MyForm extends React.Component {
 
     render() {
     
-        const validStatus = this.props.validation.valid ? "Yes": "No";
-
         return (
              <div className="form">
 
@@ -55,14 +53,8 @@ export default class MyForm extends React.Component {
 
                 <SubForm />                
 
-                {/*<button disabled={!this.props.validation.valid} onClick={() => this.submit()}>Submit</button>*/}
                 <Submit onSubmit={() => this.submit()} />
 
-                <br />
-                <br />
-                <div>
-                    Is valid: {validStatus}
-                </div>
         </div>
         )
     }

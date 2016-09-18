@@ -1,13 +1,5 @@
 import React from 'react';
 
-const isFunction = (x) => {
- return typeof x  === "function"
-}
-
-const defaultOptions = {
-    custom: false
-};
-
 export const trigger = (WrappedComponent) => {
     
     return class TriggerComponent extends React.Component {
@@ -26,13 +18,7 @@ export const trigger = (WrappedComponent) => {
         }
 
         render() {
-
-            const validation = {
-                validate: (onSuccess, onFailed) => {
-                    this.validate(onSuccess, onFailed);
-                }
-            }
-            return (<WrappedComponent {...this.props} validation={validation} />);
+            return (<WrappedComponent {...this.props} validate={(onSuccess, onFailed) => this.validate(onSuccess, onFailed)} />);
         }
     }
 };

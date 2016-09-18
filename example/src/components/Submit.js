@@ -1,11 +1,12 @@
 import React from 'react';
-import { trigger } from '../../../src';
+import { trigger, isValid } from '../../../src';
 
 @trigger()
+@isValid()
 export default class Submit extends React.Component {
     render() {
         return  ( 
-            <button onClick={() => this.props.validation.validate(() => this.props.onSubmit())}>Submit</button> 
+            <button disabled={!this.props.isValid} onClick={() => this.props.validate(() => this.props.onSubmit())}>Submit</button> 
         );
     }
 }

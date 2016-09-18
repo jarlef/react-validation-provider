@@ -47,7 +47,7 @@ const evaluate = (WrappedComponent, options) => {
 
         componentDidMount() {            
             if(this.context.validation) {    
-                this.context.validation.register(this);
+                this.context.validation.registerComponent(this);
             }
             
             if(!this.context.validation || this.context.validation.isEnabled())
@@ -58,7 +58,7 @@ const evaluate = (WrappedComponent, options) => {
 
         componentWillUnmount() {
             if(this.context.validation) {            
-                this.context.validation.unregister(this);
+                this.context.validation.unregisterComponent(this);
             }
         }
 
