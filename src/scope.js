@@ -91,7 +91,7 @@ const scope = (WrappedComponent, options) => {
             } 
 
             if(this.isValid && onFailed) {
-                onFailed();
+                onFailed(this.components.filter(c => !c.valid));
             }
             
             if(!this.isValid && this.options.scroll) {
