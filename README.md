@@ -15,9 +15,9 @@ that is going to be validated. This is done by wrapping the input elements/compo
 inside a react component that is decorated with *@validationComponent* decorator. 
 
 ```
-import { validationComponent } from 'react-validation-provider';
+import { validation } from 'react-validation-provider';
 
-@validationComponent
+@validation()
 export default class TextInput extends React.Component {
     render() {
         return ( 
@@ -29,7 +29,7 @@ export default class TextInput extends React.Component {
 
 ```
 //alternative without using decorator
-import { validationComponent } from 'react-validation-provider';
+import { validation } from 'react-validation-provider';
 
 class TextInput extends React.Component {
     render() {
@@ -39,7 +39,7 @@ class TextInput extends React.Component {
     }
 }
 
-export default validationComponent(TextInput);
+export default validation()(TextInput);
 ````
 
 Afterwards you simply place these components inside your form components
@@ -77,9 +77,9 @@ contains all the input components that are going to be evaulted. The result of t
 injected into the isValid prop.
 
 ```
-import { validationContext } from 'react-validation-provider';
+import { scope } from 'react-validation-provider';
 
-@validationContext
+@scope()
 export default class MyForm extends React.Component {
    render() {
        return( 
