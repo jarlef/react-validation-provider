@@ -1,7 +1,5 @@
 import React from 'react';
 
-import hoistStatics from 'hoist-non-react-statics';
-
 const isFunction = (x) => {
  return typeof x  === "function"
 }
@@ -11,9 +9,8 @@ const defaultOptions = {
 };
 
 export const evaluate = (WrappedComponent, options) => {
-
     
-    class ValidationComponent extends React.Component {
+    return class ValidationComponent extends React.Component {
 
         static propTypes = {
             value: React.PropTypes.any.isRequired,
@@ -146,9 +143,6 @@ export const evaluate = (WrappedComponent, options) => {
 
         }
     }
-
-    
-    return ValidationComponent;
 };
 
 export default (options = {}) => {

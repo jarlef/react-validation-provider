@@ -1,5 +1,5 @@
 import React from 'react';
-import { validate, simple } from '../../../src';
+import { validate } from '../../../src';
 import Error from './Error';
 
 @validate()

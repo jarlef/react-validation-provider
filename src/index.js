@@ -1,4 +1,5 @@
 import validate from './validate';
 import scope from './scope';
+import trigger from './trigger';
 
-export { validate, scope };
+export { validate, scope, trigger };

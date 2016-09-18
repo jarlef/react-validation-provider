@@ -11,8 +11,7 @@ const defaultOptions = {
 };
 
 const scope = (WrappedComponent, options) => {
-
-
+    
     return class ValidationScope extends React.Component {
 
         static childContextTypes = {
@@ -27,6 +26,7 @@ const scope = (WrappedComponent, options) => {
 
             this.state = { isValid: this.isValid };
             this.components = [];
+            this.triggers = [];
         }
 
         componentWillMount() {
@@ -49,7 +49,8 @@ const scope = (WrappedComponent, options) => {
         update() {        
             const isValid = this.components.every(c => !!c.valid);
             this.isValid = isValid;
-            this.setState({isValid});            
+            this.setState({isValid});  
+              
         }
 
         getChildContext() {
@@ -57,6 +58,9 @@ const scope = (WrappedComponent, options) => {
                 register: (component) => this.register(component), 
                 unregister: (component) => this.unregister(component),
                 update: () => this.update(),
+                validate: (onSuccess, onFailed) => {
+                    this.validate(onSuccess, onFailed);
+                },
                 isEnabled: () => this.enabled
             };
             
@@ -65,33 +69,35 @@ const scope = (WrappedComponent, options) => {
             };
         }
 
+        validate(onSuccess, onFailed) {
+            this.enabled = true;
+            this.components.forEach(c => c.checkValid());
+        
+            if(this.isValid && onSuccess) {
+                onSuccess();
+            } 
+
+            if(this.isValid && onFailed) {
+                onFailed();
+            }
+            
+            if(!this.isValid && options.scroll) {
+                const component = this.components[0];
+                const element = ReactDOM.findDOMNode(component);
+
+                scrollToElement(element, {
+                    offset: options.scrollOffset,
+                    ease: options.scrollEffect,
+                    duration: options.scrollDuration
+                });
+            }  
+        } 
+
         render(){
             const validation = {
                 valid: this.state.isValid,
                 validate: (onSuccess, onFailed) => {
-                    this.enabled = true;
-                    this.components.forEach(c => c.checkValid());
-                
-                    if(this.isValid && onSuccess) {
-                        onSuccess();
-                    } 
-
-                    if(this.isValid && onFailed) {
-                        onFailed();
-                    }
-                    
-                    if(!this.isValid && options.scroll) {
-                        const component = this.components[0];
-                        const element = ReactDOM.findDOMNode(component);
-
-                        scrollToElement(element, {
-                            offset: options.scrollOffset,
-                            ease: options.scrollEffect,
-                            duration: options.scrollDuration
-                        });
-
-                    }
-
+                    this.validate(onSuccess, onFailed);
                 }
             }
             return (

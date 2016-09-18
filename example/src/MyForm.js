@@ -3,6 +3,7 @@ import './MyForm.css';
 import { customScope } from './scopes';
 import TextInput from './components/TextInput';
 import SelectBox from './components/SelectBox';
+import Submit from './components/Submit';
 import { required, email } from './rules';
 import SubForm from './SubForm';
 
@@ -55,7 +56,7 @@ export default class MyForm extends React.Component {
                 <SubForm />                
 
                 {/*<button disabled={!this.props.validation.valid} onClick={() => this.submit()}>Submit</button>*/}
-                <button onClick={() => this.props.validation.validate(() => this.submit())}>Submit</button>
+                <Submit onSubmit={() => this.submit()} />
 
                 <br />
                 <br />
