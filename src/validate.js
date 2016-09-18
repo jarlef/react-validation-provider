@@ -15,7 +15,6 @@ const evaluate = (WrappedComponent, options) => {
 
     return class ValidationComponent extends React.Component {        
         static propTypes = {
-            value: React.PropTypes.any.isRequired,
             rules: React.PropTypes.array
         };
 
@@ -40,7 +39,7 @@ const evaluate = (WrappedComponent, options) => {
         }
 
         componentWillReceiveProps(nextProps) {
-            if(this.props.value !== nextProps.value && (!this.context.validation || this.context.validation.isEnabled())) {
+            if(this.props[this.options.propertyName] !== nextProps[this.options.propertyName] && (!this.context.validation || this.context.validation.isEnabled())) {
                 this.validate(nextProps[this.options.propertyName]);
             }
         }
