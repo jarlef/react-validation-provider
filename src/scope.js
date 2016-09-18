@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import scrollToElement from 'scroll-to-element';
 
-const defaultOptions = {
+let defaultOptions = {
     manual: false,
     scroll: true,
     scrollOffset: 0,
@@ -18,10 +18,11 @@ const scope = (WrappedComponent, options) => {
             validation: React.PropTypes.object
         };
 
-        constructor(props) {
+        constructor(props) {            
             super(props);
 
-            this.enabled = !options.manual;
+            this.options = Object.assign({}, defaultOptions, options);
+            this.enabled = !this.options.manual;
             this.isValid = true;
 
             this.state = { isValid: this.isValid };
@@ -81,14 +82,14 @@ const scope = (WrappedComponent, options) => {
                 onFailed();
             }
             
-            if(!this.isValid && options.scroll) {
+            if(!this.isValid && this.options.scroll) {
                 const component = this.components[0];
                 const element = ReactDOM.findDOMNode(component);
 
                 scrollToElement(element, {
-                    offset: options.scrollOffset,
-                    ease: options.scrollEffect,
-                    duration: options.scrollDuration
+                    offset: this.options.scrollOffset,
+                    ease: this.options.scrollEffect,
+                    duration: this.options.scrollDuration
                 });
             }  
         } 
@@ -107,8 +108,12 @@ const scope = (WrappedComponent, options) => {
     }
 }
 
-export default (options = {}) => {
-    const mergedOptions = Object.assign({}, defaultOptions, options);
 
-    return (WrappedComponent) => scope(WrappedComponent, mergedOptions);
+export const setDefaultScopeOptions = (options) => {    
+    defaultOptions = Object.assign({}, defaultOptions, options);
+}
+
+
+export default (options = {}) => {
+    return (WrappedComponent) => scope(WrappedComponent, options);
 }

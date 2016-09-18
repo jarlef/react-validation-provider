@@ -1,17 +1,19 @@
 import React from 'react';
+import Layout from './layout';
 
 const isFunction = (x) => {
  return typeof x  === "function"
 }
 
-const defaultOptions = {
-    custom: false
+let defaultOptions = {
+    custom: false,
+    propertyName: "value",
+    layout: Layout
 };
 
-export const evaluate = (WrappedComponent, options) => {
-    
-    return class ValidationComponent extends React.Component {
+const evaluate = (WrappedComponent, options) => {    
 
+    return class ValidationComponent extends React.Component {        
         static propTypes = {
             value: React.PropTypes.any.isRequired,
             rules: React.PropTypes.array
@@ -23,6 +25,8 @@ export const evaluate = (WrappedComponent, options) => {
 
         constructor(props) {
             super(props);           
+
+            this.options = Object.assign({}, defaultOptions, options);
 
             this.state = {
                 valid: true,
@@ -37,7 +41,7 @@ export const evaluate = (WrappedComponent, options) => {
 
         componentWillReceiveProps(nextProps) {
             if(this.props.value !== nextProps.value && (!this.context.validation || this.context.validation.isEnabled())) {
-                this.validate(nextProps.value);
+                this.validate(nextProps[this.options.propertyName]);
             }
         }
 
@@ -48,7 +52,7 @@ export const evaluate = (WrappedComponent, options) => {
             
             if(!this.context.validation || this.context.validation.isEnabled())
             {
-                this.validate(this.props.value);
+                this.validate(this.props[this.options.propertyName]);
             }
         }
 
@@ -59,7 +63,7 @@ export const evaluate = (WrappedComponent, options) => {
         }
 
         checkValid() {
-            this.validate(this.props.value);
+            this.validate(this.props[this.options.propertyName]);
         }
 
         validate(value) {           
@@ -120,23 +124,18 @@ export const evaluate = (WrappedComponent, options) => {
             const { rules, ...componentProps } = this.props;
             const validation = { rules, valid: this.state.valid, pending: this.state.pending, errorMessage: this.state.errorMessage };
             
-            if(options.custom) {
+            if(this.options.custom) {
                 return (
                     <WrappedComponent componentProps={componentProps} validation={validation} />
                 )
             }
 
-            const error = !this.state.valid ? ( <div className="form-element-error">
-                                                    {this.state.errorMessage}
-                                                </div>
-                                            ) : <div />;
-        
+            const Layout = this.options.layout;        
                 
             return (
-                <div>
+                <Layout {...validation}>
                     <WrappedComponent {...componentProps} />
-                    {error}
-                </div>
+                </Layout>
 
             );
             
@@ -145,9 +144,10 @@ export const evaluate = (WrappedComponent, options) => {
     }
 };
 
+export const setDefaultValidateOptions = (options) => {
+    defaultOptions = Object.assign({}, defaultOptions, options);
+}
+
 export default (options = {}) => {
-
-    const margedOptions = Object.assign({}, defaultOptions, options);
-
-    return (WrappedComponent) => evaluate(WrappedComponent, margedOptions);
+    return (WrappedComponent) => evaluate(WrappedComponent, options);
 }

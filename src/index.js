@@ -1,5 +1,5 @@
-import validate from './validate';
-import scope from './scope';
+import validate, { setDefaultValidateOptions } from './validate';
+import scope, { setDefaultScopeOptions } from './scope';
 import trigger from './trigger';
 
-export { validate, scope, trigger };
+export { validate, scope, trigger, setDefaultValidateOptions, setDefaultScopeOptions };
