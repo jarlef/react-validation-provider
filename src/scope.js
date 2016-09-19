@@ -90,7 +90,7 @@ const scope = (WrappedComponent, options) => {
                 onSuccess();
             } 
 
-            if(this.isValid && onFailed) {
+            if(!this.isValid && onFailed) {
                 onFailed(this.components.filter(c => !c.valid));
             }
             
