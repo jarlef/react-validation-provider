@@ -85,6 +85,7 @@ const scope = (WrappedComponent, options) => {
         validate(onSuccess, onFailed) {
             this.enabled = true;
             this.components.forEach(c => c.checkValid());
+            this.enabled = !this.options.manual;
         
             if(this.isValid && onSuccess) {
                 onSuccess();
