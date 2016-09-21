@@ -29,7 +29,7 @@ const scope = (WrappedComponent, options) => {
             this.subscribers = [];
         }
 
-        componentWillMount() {
+        componentDidMount() {
             this.update();
         }
 
@@ -51,7 +51,7 @@ const scope = (WrappedComponent, options) => {
             subscriber.setIsValid(this.isValid);
         }
 
-        unregisterComponent(subscriber) {
+        unregisterSubscriber(subscriber) {
             const index = this.subscribers.indexOf(subscriber);
             if(index > -1) {
                 this.subscribers.splice(index, 1);

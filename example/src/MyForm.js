@@ -1,13 +1,14 @@
 import React from 'react';
 import './MyForm.css';
-import { scope } from '../../src';
+import { scope, isValid } from '../../src';
 import TextInput from './components/TextInput';
 import SelectBox from './components/SelectBox';
 import Submit from './components/Submit';
 import { required, email } from './rules';
 import SubForm from './SubForm';
 
-@scope()
+@scope({ manual: true })
+@isValid()
 export default class MyForm extends React.Component {
 
     constructor(props) {
@@ -21,6 +22,10 @@ export default class MyForm extends React.Component {
     }
 
     render() {
+
+        const status = this.props.isValid ? "Yes" : "No";
+
+        const emailRules = !!this.state.name && this.state.name.trim() ? [required, email] : [];      
     
         return (
              <div className="form">
@@ -37,7 +42,7 @@ export default class MyForm extends React.Component {
                     <label>Email:</label>
                     <TextInput value={this.state.email} 
                             onChange={(ev) => this.setState({email: ev.target.value})}
-                            rules={[required, email]} />
+                            rules={emailRules} />
                 </div>
                 <div className="form-element">
                     <label>City:</label>
@@ -53,6 +58,7 @@ export default class MyForm extends React.Component {
 
                 <SubForm />                
 
+                <p>Is valid: {status}</p>
                 <Submit onSubmit={() => this.submit()} />
 
         </div>

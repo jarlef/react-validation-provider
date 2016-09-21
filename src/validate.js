@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from './layout';
+import _isEqual from 'lodash/isequal';
 
 const isFunction = (x) => {
  return typeof x  === "function"
@@ -27,21 +28,16 @@ const evaluate = (WrappedComponent, options) => {
 
             this.options = Object.assign({}, defaultOptions, options);
 
-            this.state = {
-                valid: true,
-                pending: false,
-                errorMessage: null
-            };
-
             this.valid = true;  
             this.pending = false;
+            this.errorRule = null;
             this.errorMessage = null;              
         }
 
-        componentWillReceiveProps(nextProps) {
+        componentWillReceiveProps(nextProps) {          
             if(this.props[this.options.propertyName] !== nextProps[this.options.propertyName] && (!this.context.validation || this.context.validation.isEnabled())) {
                 this.validate(nextProps[this.options.propertyName]);
-            }
+            } 
         }
 
         componentDidMount() {            
@@ -75,14 +71,26 @@ const evaluate = (WrappedComponent, options) => {
             const updateState = (valid, pending, rule) => {           
                 const errorMessage = !valid && !pending ? rule.hint(value) : null;
 
-                this.setState({ valid, pending, errorMessage });
+                const update = this.valid !== valid || this.pending !== pending || this.errorMessage !== errorMessage;
+
                 this.valid = valid;
                 this.pending = pending;
-                this.errorMessage = errorMessage;
                 
+                if(errorMessage) {
+                    this.errorMessage = errorMessage;
+                    this.errorRule = rule;
+                } else {
+                    this.errorMessage = null;
+                    this.errorRule = null;
+                }
+
                 if(this.context.validation) {
                     this.context.validation.update();
                 } 
+
+                if(update) {
+                    this.forceUpdate();
+                }
             };
 
             if(this.props.rules) {
@@ -115,13 +123,13 @@ const evaluate = (WrappedComponent, options) => {
                 }
             }
             
-            updateState(valid, pending, rule); 
+            updateState(valid, pending, !valid ? rule : null); 
         }
     
         render() {
 
             const { rules, ...componentProps } = this.props;
-            const validation = { rules, valid: this.state.valid, pending: this.state.pending, errorMessage: this.state.errorMessage };
+            const validation = { rules, valid: this.valid, pending: this.pending, errorMessage: this.errorMessage };
             
             if(this.options.custom) {
                 return (

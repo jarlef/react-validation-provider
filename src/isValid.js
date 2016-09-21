@@ -10,7 +10,7 @@ export const isValid = (WrappedComponent) => {
 
         constructor(props) {
             super(props);
-            this.state = { isValid: true };
+            this.isValid = false;
         }
 
         componentDidMount() {            
@@ -26,11 +26,12 @@ export const isValid = (WrappedComponent) => {
         }
 
         setIsValid(isValid) {
-            this.setState({ isValid });
+            this.isValid = isValid;
+            this.forceUpdate();
         }
 
         render() {            
-            return (<WrappedComponent {...this.props} isValid={this.state.isValid} />);
+            return (<WrappedComponent {...this.props} isValid={this.isValid} />);
         }
     }
 };
