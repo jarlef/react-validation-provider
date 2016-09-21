@@ -1,9 +1,34 @@
 import React from 'react';
 import Layout from './layout';
-import _isEqual from 'lodash/isequal';
 
 const isFunction = (x) => {
- return typeof x  === "function"
+    return typeof x  === "function";
+}
+
+const isObject = (x) => {
+    return typeof x  === "object";
+}
+
+const compareItems = (item1, item2) => {
+    if(isFunction(item1)) {
+            return item1 === item2;
+    }
+
+    if(isObject(item1)) {
+        return JSON.stringify(item1) === JSON.stringify(item2);
+    }
+
+    return item1 === item2;
+} 
+
+const compareArrays = (array1, array2) => {
+    array1 = [].concat(array1);
+    array2 = [].concat(array2);
+
+    return array1.length === array2.length && array1.every((item1, index) => {
+        const item2 = array2[index];
+        return compareItems(item1, item2);
+    });
 }
 
 let defaultOptions = {
@@ -34,10 +59,27 @@ const evaluate = (WrappedComponent, options) => {
             this.errorMessage = null;              
         }
 
+        
         componentWillReceiveProps(nextProps) {          
-            if(this.props[this.options.propertyName] !== nextProps[this.options.propertyName] && (!this.context.validation || this.context.validation.isEnabled())) {
-                this.validate(nextProps[this.options.propertyName]);
-            } 
+
+            let rulesHaveChanged = false;
+            if(!this.valid) {
+                if(!nextProps.rules || nextProps.rules.length === 0 || nextProps.rules.every(r => !compareItems(r, this.errorRule))) {
+                    this.valid = true;  
+                    this.pending = false;
+                    this.errorRule = null;
+                    this.errorMessage = null; 
+                    this.forceUpdate(); 
+                    return;
+                } 
+            } else {
+                rulesHaveChanged = !compareArrays(this.props.rules, nextProps.rules);
+            }
+
+            if((rulesHaveChanged || this.props[this.options.propertyName] !== nextProps[this.options.propertyName]) && (!this.context.validation || this.context.validation.isEnabled())) {
+               this.validate(nextProps[this.options.propertyName], nextProps);
+            }
+            
         }
 
         componentDidMount() {            
@@ -47,7 +89,7 @@ const evaluate = (WrappedComponent, options) => {
             
             if(!this.context.validation || this.context.validation.isEnabled())
             {
-                this.validate(this.props[this.options.propertyName]);
+                this.validate(this.props[this.options.propertyName], this.props);
             }
         }
 
@@ -58,18 +100,19 @@ const evaluate = (WrappedComponent, options) => {
         }
 
         checkValid() {
-            this.validate(this.props[this.options.propertyName]);
+            this.validate(this.props[this.options.propertyName], this.props);
         }
 
-        validate(value) {           
+        validate(value, props) {           
 
             let valid = true;
             let pending = false;
             let errorMessage = null;
             let rule = null;
+            let actualRule = null;
 
-            const updateState = (valid, pending, rule) => {           
-                const errorMessage = !valid && !pending ? rule.hint(value) : null;
+            const updateState = (valid, pending, rule, actualRule) => {           
+                const errorMessage = !valid && !pending ? actualRule.hint(value) : null;
 
                 const update = this.valid !== valid || this.pending !== pending || this.errorMessage !== errorMessage;
 
@@ -93,16 +136,17 @@ const evaluate = (WrappedComponent, options) => {
                 }
             };
 
-            if(this.props.rules) {
-                for (var i = 0; i < this.props.rules.length; i++) {
-                    rule = this.props.rules[i];
+            if(props.rules) {
+                for (var i = 0; i < props.rules.length; i++) {
+                    rule = props.rules[i];
                     
-                    if(isFunction(rule))
-                    {
-                        rule = rule();
+                    if(isFunction(rule)) {
+                        actualRule = rule();
+                    } else {
+                        actualRule = rule;
                     }
                     
-                    const result = !!rule.validate(value);
+                    const result = !!actualRule.validate(value);
 
                     if(result instanceof Promise) {
                         pending = true;
@@ -123,7 +167,7 @@ const evaluate = (WrappedComponent, options) => {
                 }
             }
             
-            updateState(valid, pending, !valid ? rule : null); 
+            updateState(valid, pending, !valid ? rule : null, !valid ? actualRule : null); 
         }
     
         render() {

@@ -26,7 +26,7 @@ export default class MyForm extends React.Component {
         const status = this.props.isValid ? "Yes" : "No";
 
         const emailRules = !!this.state.name && this.state.name.trim() ? [required, email] : [];      
-    
+        
         return (
              <div className="form">
 

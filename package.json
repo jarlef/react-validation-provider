@@ -33,7 +33,6 @@
     "rimraf": "^2.5.4"
   },
   "dependencies": {
-    "lodash": "^4.16.1",
     "scroll-to-element": "^2.0.0"
   }
 }
