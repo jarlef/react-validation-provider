@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import scrollToElement from 'scroll-to-element';
 
 let defaultOptions = {
     manual: false
