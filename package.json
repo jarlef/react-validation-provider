@@ -1,6 +1,6 @@
 {
   "name": "react-validation-provider",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "React validation component",
   "keywords": [
     "react",
@@ -31,5 +31,5 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "rimraf": "^2.5.4"
-  }  
+  }
 }
