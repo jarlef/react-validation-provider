@@ -43,6 +43,9 @@ module.exports = {
             path.resolve(__dirname, 'node_modules'),
             //path.resolve(__dirname, '..') // so we can import { someModule } from 'my_parent_directory_modules';
         ],
+        alias: {
+          'react-validation-provider': path.resolve(__dirname, '../src')
+        },
         extensions: ['', '.js', '.es', '.jsx']
     }
 };

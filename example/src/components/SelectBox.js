@@ -1,5 +1,5 @@
 import React from 'react';
-import { validate } from '../../../src';
+import { validate } from 'react-validation-provider';
 import Error from './Error';
 
 @validate({ custom: true })

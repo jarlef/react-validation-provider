@@ -29,6 +29,7 @@
     "eslint": "^3.5.0",
     "eslint-plugin-react": "^6.2.2",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "react-dom": "^15.3.1",
+    "scroll-to-element": "^2.0.0"
   }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
-import './MyForm.css';
+import { validate } from 'react-validation-provider';
 
+import './MyForm.css';
 import TextInput from './components/TextInput';
-import { required, minimumLength, somethingAsync } from './rules';
-import { validate } from '../../src';
+import { required, minimumLength } from './rules';
 
 const Password = validate()((props) => <input type="password" {...props} />);
       

@@ -146,20 +146,8 @@ const evaluate = (WrappedComponent, options) => {
                         actualRule = rule;
                     }
                     
-                    const result = !!actualRule.validate(value);
-
-                    if(result instanceof Promise) {
-                        pending = true;
-                        valid = false;
-                        result.then((result) => {                             
-                            updateState(!!result, false, rule);                           
-                        }).catch(() => {                                          
-                            updateState(false, false, rule); 
-                        });
-                    }
-                    else {
-                        valid = !!result;
-                    }
+                    const result = !!actualRule.validate(value);                   
+                    valid = !!result;                
                     
                     if(!valid) {
                         break;

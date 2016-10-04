@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom';
 import scrollToElement from 'scroll-to-element';
 
 let defaultOptions = {
-    manual: false,
-    scroll: true,
-    scrollOffset: 0,
-    scrollEffect: "out-back",
-    scollDuration: 1500 
+    manual: false
 };
 
 const scope = (WrappedComponent, options) => {
@@ -94,17 +90,6 @@ const scope = (WrappedComponent, options) => {
             if(!this.isValid && onFailed) {
                 onFailed(this.components.filter(c => !c.valid));
             }
-            
-            if(!this.isValid && this.options.scroll) {
-                const component = this.components.filter(c => !!c.valid)[0];
-                const element = ReactDOM.findDOMNode(component);
-
-                scrollToElement(element, {
-                    offset: this.options.scrollOffset,
-                    ease: this.options.scrollEffect,
-                    duration: this.options.scrollDuration
-                });
-            }  
         } 
 
         render() {

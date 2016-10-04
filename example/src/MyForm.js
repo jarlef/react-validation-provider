@@ -1,6 +1,6 @@
 import React from 'react';
+import { scope, isValid } from 'react-validation-provider';
 import './MyForm.css';
-import { scope, isValid } from '../../src';
 import TextInput from './components/TextInput';
 import SelectBox from './components/SelectBox';
 import Submit from './components/Submit';
