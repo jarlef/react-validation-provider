@@ -12,7 +12,7 @@ export default class MyForm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { foreigner: true, country: "", password: "test"};
+        this.state = { foreigner: true, country: '', password: 'test'};
     }
 
     renderForeigner() {

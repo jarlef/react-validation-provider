@@ -14,7 +14,7 @@ export default class MyForm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { name: "scott", email: "", city: ""};
+        this.state = { name: 'scott', email: '', city: ''};
     }
 
     submit() {
@@ -23,7 +23,7 @@ export default class MyForm extends React.Component {
 
     render() {
 
-        const status = this.props.isValid ? "Yes" : "No";
+        const status = this.props.isValid ? 'Yes' : 'No';
 
         const emailRules = !!this.state.name && this.state.name.trim() ? [required, email] : [];      
         
@@ -34,7 +34,7 @@ export default class MyForm extends React.Component {
                     <label>Name:</label>
                     <TextInput value={this.state.name} 
                             onChange={(ev) => this.setState({name: ev.target.value})}
-                            rules={[required("Navn er obligatorisk")]} />
+                            rules={[required('Navn er obligatorisk')]} />
                 </div>
 
 

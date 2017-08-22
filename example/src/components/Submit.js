@@ -9,7 +9,7 @@ const errorHandler = (components) => {
 
     scrollToElement(element, {
         offset: -50,
-        ease: "out-back",
+        ease: 'out-back',
         duration: 1500
     });
 }
