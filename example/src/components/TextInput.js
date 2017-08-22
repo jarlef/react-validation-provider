@@ -1,6 +1,5 @@
 import React from 'react';
 import { validate } from 'react-validation-provider';
-import Error from './Error';
 
 @validate()
 export default class TextInput extends React.Component {

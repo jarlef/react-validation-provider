@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 let defaultOptions = {
     manual: false
@@ -10,7 +11,7 @@ const scope = (WrappedComponent, options) => {
     return class ValidationScope extends React.Component {
 
         static childContextTypes = {
-            validation: React.PropTypes.object
+            validation: PropTypes.object
         };
 
         constructor(props) {            

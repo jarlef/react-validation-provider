@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export const isValid = (WrappedComponent) => {
     
     return class IsValidComponent extends React.Component {
         
         static contextTypes = {
-            validation: React.PropTypes.object
+            validation: PropTypes.object
         };
 
         constructor(props) {

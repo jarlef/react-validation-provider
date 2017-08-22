@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export const trigger = (WrappedComponent) => {
     
     return class TriggerComponent extends React.Component {
         
         static contextTypes = {
-            validation: React.PropTypes.object
+            validation: PropTypes.object
         };
 
         validate(onSuccess, onFailed) {

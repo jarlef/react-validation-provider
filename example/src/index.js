@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import './index.css';
+
 import { setDefaultScopeOptions } from 'react-validation-provider';
+import App from './App';
 
 setDefaultScopeOptions({ manual: true });
-
-import App from './App';
 
 ReactDOM.render(
   <App />,

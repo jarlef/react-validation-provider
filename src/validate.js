@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from './layout';
+import PropTypes from 'prop-types';
 
 const isFunction = (x) => {
     return typeof x  === "function";
@@ -41,11 +42,11 @@ const evaluate = (WrappedComponent, options) => {
 
     return class ValidationComponent extends React.Component {        
         static propTypes = {
-            rules: React.PropTypes.array
+            rules: PropTypes.array
         };
 
         static contextTypes = {
-            validation: React.PropTypes.object
+            validation: PropTypes.object
         };
 
         constructor(props) {
