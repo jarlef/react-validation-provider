@@ -15,9 +15,9 @@ that is going to be validated. This is done by wrapping the input elements/compo
 inside a react component that is decorated with *@validationComponent* decorator. 
 
 ```
-import { validation } from 'react-validation-provider';
+import { validate } from 'react-validation-provider';
 
-@validation()
+@validate()
 export default class TextInput extends React.Component {
     render() {
         return ( 
@@ -29,7 +29,7 @@ export default class TextInput extends React.Component {
 
 ```
 //alternative without using decorator
-import { validation } from 'react-validation-provider';
+import { validate } from 'react-validation-provider';
 
 class TextInput extends React.Component {
     render() {
@@ -39,7 +39,7 @@ class TextInput extends React.Component {
     }
 }
 
-export default validation()(TextInput);
+export default validate()(TextInput);
 ````
 
 Afterwards you simply place these components inside your form components
@@ -55,7 +55,12 @@ Afterwards you simply place these components inside your form components
                rules={[required, year]}
 ``` 
 
-The rules prop is a special prop used by the validation component to validate 
+The rules prop is a special prop used by the 
+
+
+
+
+component to validate 
 the value prop of the wrapped component. The rules are simply implemented by 
 defining and object with a validation expression and a message hint method.
 
