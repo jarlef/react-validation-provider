@@ -27,7 +27,7 @@ export const isValid = (WrappedComponent) => {
         }
 
         setIsValid(isValid) {
-            this.isValid = isValid;
+            this.isValid = isValid;            
             this.forceUpdate();
         }
 

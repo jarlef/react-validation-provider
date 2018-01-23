@@ -59,7 +59,6 @@ const evaluate = (WrappedComponent, options) => {
             this.errorRule = null;
             this.errorMessage = null;              
         }
-
         
         componentWillReceiveProps(nextProps) {          
 
@@ -170,13 +169,12 @@ const evaluate = (WrappedComponent, options) => {
                 )
             }
 
-            const Layout = this.options.layout;        
-                
+            const Layout = this.options.layout; 
+
             return (
                 <Layout {...validation}>
                     <WrappedComponent {...componentProps} />
                 </Layout>
-
             );
             
 

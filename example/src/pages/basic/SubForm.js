@@ -1,13 +1,12 @@
 import React from 'react';
 import { validate } from 'react-validation-provider';
 
-import './MyForm.css';
 import TextInput from './components/TextInput';
-import { required, minimumLength } from './rules';
+import { required, minimumLength } from '../../rules';
 
 const Password = validate()((props) => <input type="password" {...props} />);
-      
-export default class MyForm extends React.Component {
+
+export default class SubForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -39,7 +38,6 @@ export default class MyForm extends React.Component {
     }
 
     render() {
-       
         return (
             <div>
                 {this.renderForeigner()}
@@ -50,7 +48,6 @@ export default class MyForm extends React.Component {
                               onChange={(ev) => this.setState({ password: ev.target.value})}
                               rules={[required, minimumLength(8, 'Password must be greater than 8 characters')]} /> 
                 </div>
-
             </div>              
         )
     }

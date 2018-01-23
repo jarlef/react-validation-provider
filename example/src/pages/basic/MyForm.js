@@ -1,13 +1,14 @@
 import React from 'react';
 import { scope, isValid } from 'react-validation-provider';
-import './MyForm.css';
+
 import TextInput from './components/TextInput';
 import SelectBox from './components/SelectBox';
 import Submit from './components/Submit';
-import { required, email } from './rules';
+import { required, email } from '../../rules';
+
 import SubForm from './SubForm';
 
-@scope({ manual: true })
+@scope({ manual: false })
 @isValid()
 export default class MyForm extends React.Component {
 
@@ -34,7 +35,7 @@ export default class MyForm extends React.Component {
                     <label>Name:</label>
                     <TextInput value={this.state.name} 
                             onChange={(ev) => this.setState({name: ev.target.value})}
-                            rules={[required('Navn er obligatorisk')]} />
+                            rules={[required('Name is required')]} />
                 </div>
 
 
