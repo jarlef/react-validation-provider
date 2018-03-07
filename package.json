@@ -1,6 +1,6 @@
 {
   "name": "react-validation-provider",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "React validation component",
   "keywords": [
     "react",
@@ -33,5 +33,8 @@
     "babel-preset-stage-0": "6.5.0",
     "eslint": "3.7.1",
     "rimraf": "2.5.4"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   }
 }
