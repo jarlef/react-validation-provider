@@ -6,4 +6,5 @@ deploy:
   email: jarle.friestad@gmail.com
   api_key: $NPM_TOKEN
   on:
-    tags: true
+    branch: master
+    tags: false
