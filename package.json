@@ -9,8 +9,8 @@
   "main": "lib/index.js",
   "author": "Jarle Friestad",
   "scripts": {
-    "clean": "rimraf lib",
-    "test": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec",
+    "clean": "./node_modules/.bin/rimraf lib",
+    "test": "./node_modules/.bin/mocha src/**/*.spec.js --reporter spec",
     "build": "./node_modules/babel-cli/bin/babel.js src --out-dir lib",
     "prepublish": "npm run clean && npm run build"
   },
