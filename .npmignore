@@ -1,2 +1,5 @@
-/src/
-/examples/
+.travis.yml
+jsconfig.json
+src/
+example/
+*.spec.js
