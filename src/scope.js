@@ -34,7 +34,7 @@ const scope = (WrappedComponent, options) => {
             this.update();
         }
 
-        unregisterComponent(component) {
+        unregisterComponent(component) {                        
             const index = this.components.indexOf(component);
             if(index > -1) {
                 this.components.splice(index, 1);

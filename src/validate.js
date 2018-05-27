@@ -60,7 +60,7 @@ const evaluate = (WrappedComponent, options) => {
             this.errorMessage = null;              
         }
         
-        componentWillReceiveProps(nextProps) {          
+        UNSAFE_componentWillReceiveProps(nextProps) {          
 
             let rulesHaveChanged = false;
             if(!this.valid) {
@@ -179,7 +179,7 @@ const evaluate = (WrappedComponent, options) => {
             
 
         }
-    }
+    };
 };
 
 export const setDefaultValidateOptions = (options) => {

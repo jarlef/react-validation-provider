@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export const isValid = (WrappedComponent) => {
     
     return class IsValidComponent extends React.Component {
-        
+       
         static contextTypes = {
             validation: PropTypes.object
         };
@@ -15,15 +15,19 @@ export const isValid = (WrappedComponent) => {
         }
 
         componentDidMount() {            
-            if(this.context.validation) {    
-                this.context.validation.registerSubscriber(this);
-            }
+            if(!this.context.validation) {  
+                return;
+            }  
+
+            this.context.validation.registerSubscriber(this);            
         }
 
         componentWillUnmount() {
-            if(this.context.validation) {            
-                this.context.validation.unregisterSubscriber(this);
-            }
+            if(!this.context.validation) {     
+                return;
+            }      
+       
+            this.context.validation.unregisterSubscriber(this);            
         }
 
         setIsValid(isValid) {
