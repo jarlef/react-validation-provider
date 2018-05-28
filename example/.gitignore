@@ -10,3 +10,6 @@ js
 # misc
 .DS_Store
 npm-debug.log
+
+.cache
+dist
