@@ -9,6 +9,7 @@ import App from './App';
 
 setDefaultScopeOptions({ manual: true });
 
+
 const BootstrappedApp = () => (
   <MuiThemeProvider>
     <App />  

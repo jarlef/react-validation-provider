@@ -2,19 +2,32 @@
   "name": "react-validation-provider-demo",
   "version": "0.0.1",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "webpack-dev-server --mode development --open --hot",
+    "build": "webpack --mode production"
   },
   "license": "MIT",
   "devDependencies": {
-    "custom-react-scripts": "0.2.0"
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.0",
+    "react-hot-loader": "^4.2.0",
+    "svg-inline-loader": "^0.8.0",
+    "webpack": "^4.9.1",
+    "webpack-cli": "^2.1.4",
+    "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "material-ui": "0.20.0",
-    "react": "15.6.1",
-    "react-dom": "15.6.1",
+    "material-ui": "0.20.1",
+    "react": "16.4.0",
+    "react-dom": "16.4.0",
+    "prop-types": "15.6.1",
     "react-validation-provider": "file:../",
     "scroll-to-element": "2.0.0"
   }

@@ -60,7 +60,7 @@ const evaluate = (WrappedComponent, options) => {
             this.errorMessage = null;              
         }
         
-        UNSAFE_componentWillReceiveProps(nextProps) {          
+        componentWillReceiveProps(nextProps) {          
 
             let rulesHaveChanged = false;
             if(!this.valid) {
