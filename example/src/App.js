@@ -28,7 +28,7 @@ class App extends Component {
               <BasicExample />
           </Tab>
           <Tab label="Styled Example">
-              <StyledExample />
+              <StyledExample /> 
           </Tab>
         </Tabs>
       </div>

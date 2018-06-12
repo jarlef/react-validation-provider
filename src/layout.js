@@ -8,15 +8,15 @@ export default class Layout extends React.PureComponent {
         errorMessage: PropTypes.string
     }
     render() {        
-         const error = !this.props.valid ? ( <div className="form-element-error">
-                                                    {this.props.errorMessage}
-                                                </div>
-                                            ) : ( <div /> ); 
-            return (
-                <div>
-                    {this.props.children}
-                    {error}
-                </div>
-            );
+        const error = !this.props.valid ? ( <div className="form-element-error">
+                                                {this.props.errorMessage}
+                                            </div>
+                                        ) : ( <div /> ); 
+        return (
+            <div>
+                {this.props.children}
+                {error}
+            </div>
+        );
     }
 }

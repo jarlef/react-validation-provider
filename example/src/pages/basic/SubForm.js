@@ -4,7 +4,8 @@ import { validate } from 'react-validation-provider';
 import TextInput from './components/TextInput';
 import { required, minimumLength } from '../../rules';
 
-const Password = validate()((props) => <input type="password" {...props} />);
+//const Password = validate()((props) => <input type="password" {...props} />);
+const Password = (props) => <input type="password" {...props} />;
 
 export default class SubForm extends React.Component {
 

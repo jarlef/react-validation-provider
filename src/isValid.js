@@ -1,33 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ValidationContext from './context';
 
 export const isValid = (WrappedComponent) => {
     
-    return class IsValidComponent extends React.Component {
-       
-        static contextTypes = {
-            validation: PropTypes.object
-        };
+    class IsValid extends React.Component {
 
         constructor(props) {
             super(props);
             this.isValid = false;
+            console.log(props);
         }
 
         componentDidMount() {            
-            if(!this.context.validation) {  
+            if(!this.props.context) {  
                 return;
             }  
 
-            this.context.validation.registerSubscriber(this);            
+            this.props.context.registerSubscriber(this);            
         }
 
         componentWillUnmount() {
-            if(!this.context.validation) {     
+            if(!this.props.context) {     
                 return;
             }      
        
-            this.context.validation.unregisterSubscriber(this);            
+            this.props.context.unregisterSubscriber(this);            
         }
 
         setIsValid(isValid) {
@@ -39,7 +37,18 @@ export const isValid = (WrappedComponent) => {
             return (<WrappedComponent {...this.props} isValid={this.isValid} />);
         }
     }
+
+    return class IsValidProxy extends React.Component {
+
+        render() {            ;
+            return (<ValidationContext.Consumer>
+                        {context => <IsValid {...this.props} context={context} />}
+                    </ValidationContext.Consumer>
+            );
+        }
+    }
 };
+
 
 export default () => {
     return (WrappedComponent) => isValid(WrappedComponent);
