@@ -4,6 +4,8 @@ Non-intrusive validation library for [React](https://facebook.github.io/react/).
 
 [![Build Status](https://travis-ci.org/jarlef/react-validation-provider.svg?branch=master)](https://travis-ci.org/jarlef/react-validation-provider)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/jarlef/react-validation-provider/badge.svg)](https://snyk.io/test/github/jarlef/react-validation-provider) 
+
 ## Installation
 
 ```
