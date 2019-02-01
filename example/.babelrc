@@ -1,0 +1,17 @@
+{
+    "presets": [
+        "env", "stage-0", "react"
+    ],
+    "plugins": [
+                "react-hot-loader/babel",
+                "transform-decorators-legacy", 
+                "transform-class-properties",
+                ["module-resolver", {
+                    "root": ["./src"],
+                    "alias": {
+                      "react-validation-provider": "../src",
+                      "react": "react"
+                    }
+                  }] 
+               ]
+}

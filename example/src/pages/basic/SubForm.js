@@ -1,6 +1,5 @@
 import React from 'react';
 import { validate } from 'react-validation-provider';
-
 import TextInput from './components/TextInput';
 import { required, minimumLength } from '../../rules';
 
@@ -22,6 +21,7 @@ export default class SubForm extends React.Component {
             </div>
         );
     }
+    
     renderCountry() {
 
         if(!this.state.foreigner) {

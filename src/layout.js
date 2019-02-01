@@ -7,16 +7,16 @@ export default class Layout extends React.PureComponent {
         valid: PropTypes.bool,
         errorMessage: PropTypes.string
     }
-    render() {        
-         const error = !this.props.valid ? ( <div className="form-element-error">
-                                                    {this.props.errorMessage}
-                                                </div>
-                                            ) : ( <div /> ); 
-            return (
-                <div>
-                    {this.props.children}
-                    {error}
-                </div>
-            );
+    render() {       
+        const error = !this.props.valid ? ( <div className="form-element-error">
+                                                {this.props.errorMessage}
+                                            </div>
+                                        ) : ( <div /> ); 
+        return (
+            <div>
+                {this.props.children}
+                {error}
+            </div>
+        );
     }
 }

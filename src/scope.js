@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+import ValidationContext from './context';
 
 let defaultOptions = {
     manual: false
@@ -9,10 +8,6 @@ let defaultOptions = {
 const scope = (WrappedComponent, options) => {
     
     return class ValidationScope extends React.Component {
-
-        static childContextTypes = {
-            validation: PropTypes.object
-        };
 
         constructor(props) {            
             super(props);
@@ -25,6 +20,7 @@ const scope = (WrappedComponent, options) => {
             this.subscribers = [];
         }
 
+        
         componentDidMount() {
             this.update();
         }
@@ -34,7 +30,7 @@ const scope = (WrappedComponent, options) => {
             this.update();
         }
 
-        unregisterComponent(component) {
+        unregisterComponent(component) {                        
             const index = this.components.indexOf(component);
             if(index > -1) {
                 this.components.splice(index, 1);
@@ -42,7 +38,7 @@ const scope = (WrappedComponent, options) => {
             }
         }
 
-         registerSubscriber(subscriber) {
+        registerSubscriber(subscriber) {
             this.subscribers.push(subscriber);
             subscriber.setIsValid(this.isValid);
         }
@@ -54,13 +50,29 @@ const scope = (WrappedComponent, options) => {
             }
         }
 
-        update() {        
-            const isValid = this.components.every(c => !!c.valid);
-            this.isValid = isValid;
-            this.subscribers.forEach(s => s.setIsValid(isValid));              
+        update() { 
+            this.isValid = this.components.every(c => !!c.valid);
+            this.subscribers.forEach(s => s.setIsValid(this.isValid));              
         }
 
-        getChildContext() {
+        validate(onSuccess, onFailed) {
+            this.enabled = true;
+            this.components.forEach(c => c.checkValid());
+            this.enabled = !this.options.manual;
+
+            this.update();
+        
+            if(this.isValid && onSuccess) {
+                onSuccess();
+                return;
+            } 
+
+            if(!this.isValid && onFailed) {
+                onFailed(this.components.filter(c => !c.valid));
+            }
+        } 
+
+        getContextProps() {
             const validationContext = {
                 registerComponent: (component) => this.registerComponent(component), 
                 unregisterComponent: (component) => this.unregisterComponent(component), 
@@ -73,36 +85,26 @@ const scope = (WrappedComponent, options) => {
                 isEnabled: () => this.enabled
             };
             
-            return {
-                validation: validationContext
-            };
+            return validationContext;
         }
 
-        validate(onSuccess, onFailed) {
-            this.enabled = true;
-            this.components.forEach(c => c.checkValid());
-            this.enabled = !this.options.manual;
-        
-            if(this.isValid && onSuccess) {
-                onSuccess();
-            } 
-
-            if(!this.isValid && onFailed) {
-                onFailed(this.components.filter(c => !c.valid));
-            }
-        } 
+       
 
         render() {
 
+            const contextProps = this.getContextProps();
             return (
-                <WrappedComponent {...this.props} />
+                <ValidationContext.Provider value={contextProps}>
+                    <WrappedComponent {...this.props} />
+                </ValidationContext.Provider>
             );
+              
         }
     }
 }
 
 
-export const setDefaultScopeOptions = (options) => {    
+export const setDefaultScopeOptions = (options = {}) => {    
     defaultOptions = Object.assign({}, defaultOptions, options);
 }
 

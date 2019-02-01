@@ -1,21 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-import { setDefaultScopeOptions } from 'react-validation-provider';
+import { render } from 'react-dom';
 import App from './App';
 
-setDefaultScopeOptions({ manual: true });
+const renderApp = () => {
+  render(
+    <App />,
+    document.getElementById('root')
+  );
+}
 
-const BootstrappedApp = () => (
-  <MuiThemeProvider>
-    <App />  
-  </MuiThemeProvider>
-);
+renderApp();
 
-ReactDOM.render(
-  <BootstrappedApp />,
-  document.getElementById('root')
-);
+module.hot.accept(renderApp);

@@ -7,7 +7,7 @@ import { required, email } from '../../rules';
 
 @scope({ manual: true })
 @isValid()
-export default class MyForm extends React.Component {
+class MyForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -45,3 +45,5 @@ export default class MyForm extends React.Component {
         );
     }
 }
+
+export default MyForm;
