@@ -25,8 +25,8 @@ const scope = (WrappedComponent, options) => {
             this.update();
         }
 
-        registerComponent(componenent) {
-            this.components.push(componenent);
+        registerComponent(component) {
+            this.components.push(component);
             this.update();
         }
 
