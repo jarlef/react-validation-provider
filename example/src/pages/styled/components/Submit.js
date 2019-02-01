@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { trigger } from 'react-validation-provider';
 import scrollToElement from 'scroll-to-element';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 
 const errorHandler = (components) => {
     const component = components[0];
@@ -20,7 +20,9 @@ class Submit extends React.Component {
 
     render() {
         return  ( 
-            <RaisedButton primary={true} onClick={() => this.props.validate(() => this.props.onSubmit(), (components) => errorHandler(components))} label="Submit" /> 
+            <Button variant="contained" color="primary" onClick={() => this.props.validate(() => this.props.onSubmit(), (components) => errorHandler(components))}>
+                Submit
+            </Button> 
         );
     }
 }
