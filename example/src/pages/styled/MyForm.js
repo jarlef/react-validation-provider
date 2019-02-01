@@ -24,6 +24,9 @@ class MyForm extends React.Component {
         
         return (
              <div className="form">
+                <div>Note: Validation is not trigged until submit is clicked</div>
+                <br />
+                <br />
                 <div className="form-element">
                     <label>Name:</label>
                     <TextInput id="name" value={this.state.name} 

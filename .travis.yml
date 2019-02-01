@@ -1,12 +1,11 @@
 language: node_js
 node_js:
-- '8'
+- '10'
 deploy:
   skip_cleanup: true
   provider: npm
   email: jarle.friestad@gmail.com
-  api_key:
-    secure: CTSWYDt3BardzmCDITqtT2TKz9YvYrqyHk3zXJLRTDOXeMPWUVMxcTa6TFsQAnlo9bNjlRQHEEIbHe/6UeSnqjQQ/gAxPMOJDgepzopUsJ0W9mp8VZY2G/rj3ky9sc0CGgqL1AuibQwLIKQzfYK56uTT6DREqJBw8oG9HZIVb3J1JBgf+nOGdPhexAg/h31AGYODKaSVZAbZ2msUjpqlkJwUbql3m4Pq7502jagOIGEj5aG75aYjMEmapg5MlEdgxWs0YXi/RTpit1Q3U4eQ7lHk477G6WD9/IN+57sN4DE9dxMRm1TPFY331J2B37bDrsI+RpvNkdmcZnd2UL/WIxv4pZJKlpfzAZEkxtqUB+QPOFxxat8HpgD5Xl6lHk8/gxc7+cRPcsGkoN36yqxhetLhYTVLZ1lBlAqtA9flffl/y64eLha60ikw8drWmm2jEkRjTjTT52KfnVnEwbWJ16kQiccT8KWYrv7QagHFGDbrXH4RgSJ2pkH7PcUH1TLSVN2d9d13AHiabosmmyRPvssqvvRRoA8Ivkzo80P56a3W1NECzKx/3nXU0LSHOAcXkdwX6IJMG8BsjdX4w5XnWpdLuy38F9paSqKSoEdBx1nKYctopljAdrK22lo/qhPf1bcWW0+9khR06xgpejLJO39QJOuisq6Nasne6GNvNNo=
+  api_key: ${NPM_TOKEN}
   on:
     branch: master
     tags: false

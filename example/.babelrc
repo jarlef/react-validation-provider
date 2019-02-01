@@ -1,17 +1,11 @@
 {
     "presets": [
-        "env", "stage-0", "react"
+        "@babel/preset-env", 
+        "@babel/preset-react"
     ],
     "plugins": [
-                "react-hot-loader/babel",
-                "transform-decorators-legacy", 
-                "transform-class-properties",
-                ["module-resolver", {
-                    "root": ["./src"],
-                    "alias": {
-                      "react-validation-provider": "../src",
-                      "react": "react"
-                    }
-                  }] 
-               ]
+        [ "@babel/plugin-proposal-decorators", { "legacy": true }],         
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-transform-runtime"
+    ]
 }
