@@ -9,7 +9,6 @@ export const isValid = (WrappedComponent) => {
         constructor(props) {
             super(props);
             this.isValid = false;
-            console.log(props);
         }
 
         componentDidMount() {            

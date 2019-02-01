@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 import ValidationContext from './context';
 
 let defaultOptions = {
@@ -52,21 +50,21 @@ const scope = (WrappedComponent, options) => {
             }
         }
 
-        update() {        
-            const isValid = this.components.every(c => !!c.valid);
-            this.isValid = isValid;
-            console.log(this.components);
-            console.log("is valid: " + this.isValid);
-            this.subscribers.forEach(s => s.setIsValid(isValid));              
+        update() { 
+            this.isValid = this.components.every(c => !!c.valid);
+            this.subscribers.forEach(s => s.setIsValid(this.isValid));              
         }
 
         validate(onSuccess, onFailed) {
             this.enabled = true;
             this.components.forEach(c => c.checkValid());
             this.enabled = !this.options.manual;
+
+            this.update();
         
             if(this.isValid && onSuccess) {
                 onSuccess();
+                return;
             } 
 
             if(!this.isValid && onFailed) {

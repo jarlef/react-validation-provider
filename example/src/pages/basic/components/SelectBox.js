@@ -3,7 +3,7 @@ import { validate } from 'react-validation-provider';
 import Error from './Error';
 
 @validate({ custom: true })
-export default class SelectBox extends React.Component {
+class SelectBox extends React.Component {
     render() {
         return (
               <div>
@@ -13,3 +13,5 @@ export default class SelectBox extends React.Component {
             );
     }
 }
+
+export default SelectBox;

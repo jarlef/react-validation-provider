@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ValidationContext from './context';
 
 export const trigger = (WrappedComponent) => {

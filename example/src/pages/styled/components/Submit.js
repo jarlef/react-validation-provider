@@ -16,7 +16,7 @@ const errorHandler = (components) => {
 }
 
 @trigger()
-export default class Submit extends React.Component {
+class Submit extends React.Component {
 
     render() {
         return  ( 
@@ -24,3 +24,5 @@ export default class Submit extends React.Component {
         );
     }
 }
+
+export default Submit;

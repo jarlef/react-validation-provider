@@ -14,14 +14,12 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
     
     const options = Object.assign({}, defaultOptions, specifiedOptions);
 
-
     const validate = (props, state) => {    
 
         const value = props[options.propertyName];
 
         let valid = true;
         let pending = false;
-        let errorMessage = null;
         let rule = null;
         let actualRule = null;
 
@@ -48,10 +46,6 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
         const updateState = (valid, pending, rule, actualRule) => {           
             const errorMessage = !valid && !pending ? actualRule.hint(value) : null;
 
-            const update = state.valid !== valid || state.pending !== pending || state.errorMessage !== errorMessage;
-
-            const { context } = props;
-
             return {
                 valid,
                 pending,
@@ -68,6 +62,7 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
         static propTypes = {
             rules: PropTypes.array
         };
+
         constructor(props) {
             super(props);           
 
@@ -87,39 +82,41 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
         static getDerivedStateFromProps(props, state) {          
 
             const value = props[options.propertyName];
-            let rulesHaveChanged = false;
-            if(!state.valid) {
-                if(!props.rules || props.rules.length === 0 || props.rules.every(r => !compareItems(r, state.errorRule))) {
-                    return {
-                        valid: true,
-                        pending: false,
-                        errorRule: null,
-                        errorMessage: null,
-                        rules: props.rules || [],
-                        value: value
-                    }
-                } 
-            } 
-            else {
-                rulesHaveChanged = !compareArrays(state.rules, props.rules);
-            }
             
-            const { context } = props;
-
-            if( (rulesHaveChanged || value !== state.value && (!props.context || props.context.isEnabled()))) {
-               return validate(props, state);
+            if(!props.context || !props.context.isEnabled()) {
+                return null;
             }
 
-            return null;
-            
-        }
-        componentDidUpdate(prevProps, prevState, snapshot) {
-        
-            if(this.valid !== prevState.valid) {
-                this.valid = this.state.valid;
-                this.props.context.update();
+            if(!props.rules) {
+                return {
+                    valid: true,
+                    pending: false,
+                    errorRule: null,
+                    errorMessage: null,
+                    rules: props.rules || [],
+                    value: value
+                }
             }
+
+            const rulesHaveChanged = !compareArrays(state.rules, props.rules);
+            const valueHaveChanged = value !== state.value;
+            
+            if(!rulesHaveChanged && !valueHaveChanged) {
+                return null;
+            }
+            const newState = validate(props);
+            return newState;
         }
+
+        componentDidUpdate() {
+            if(this.valid === this.state.valid) {
+                return;
+            }
+
+            this.valid = this.state.valid;
+            this.props.context.update();
+        }
+
         componentDidMount() {    
             const { context } = this.props;
 
@@ -129,7 +126,7 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
             
             if(!context || context.isEnabled())
             {
-                setTimeout(() => this.checkValid(),0);
+                setTimeout(() => this.checkValid(), 0);
             }
         }
 
@@ -143,16 +140,16 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
         checkValid() {
             const stateChange = validate(this.props, this.state);
+            this.valid = stateChange.valid;
             if(stateChange) {
                 this.setState(stateChange);
             }
         }
 
-
         render() {
 
             const { rules, ...componentProps } = this.props;
-            const validation = { rules, valid: this.valid, pending: this.pending, errorMessage: this.errorMessage };
+            const validation = { rules, valid: this.state.valid, pending: this.state.pending, errorMessage: this.state.errorMessage };
             
             if(options.custom) {
                 return (

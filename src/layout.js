@@ -7,7 +7,7 @@ export default class Layout extends React.PureComponent {
         valid: PropTypes.bool,
         errorMessage: PropTypes.string
     }
-    render() {        
+    render() {       
         const error = !this.props.valid ? ( <div className="form-element-error">
                                                 {this.props.errorMessage}
                                             </div>

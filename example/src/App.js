@@ -24,9 +24,9 @@ class App extends Component {
         </div>
 
         <Tabs>
-          <Tab label="Basic Example">
+         { <Tab label="Basic Example">
               <BasicExample />
-          </Tab>
+          </Tab>}
           <Tab label="Styled Example">
               <StyledExample /> 
           </Tab>
