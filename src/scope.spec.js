@@ -1,6 +1,6 @@
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import scope from './scope';
 import isValid from './isValid';
@@ -16,7 +16,6 @@ export const required = (message = 'Required') => {
         }
     };
 };
-
 
 @scope()
 @isValid()
@@ -100,7 +99,4 @@ describe('scope', () => {
             expect(scope.valid).to.be.true; 
         });
     });
-    
-
-   
 })
