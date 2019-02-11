@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ValidationContext from './context';
 
 export const isValid = (WrappedComponent) => {
@@ -11,7 +10,7 @@ export const isValid = (WrappedComponent) => {
             this.isValid = false;
         }
 
-        componentDidMount() {            
+        componentDidMount() {          
             if(!this.props.context) {  
                 return;
             }  
@@ -27,9 +26,12 @@ export const isValid = (WrappedComponent) => {
             this.props.context.unregisterSubscriber(this);            
         }
 
-        setIsValid(isValid) {
-            this.isValid = isValid;            
-            this.forceUpdate();
+        setValid(isValid) {
+            const changed = isValid !== this.isValid;
+            this.isValid = isValid;     
+            if(changed) {
+                this.forceUpdate();
+            }
         }
 
         render() {            
@@ -39,7 +41,7 @@ export const isValid = (WrappedComponent) => {
 
     return class IsValidProxy extends React.Component {
 
-        render() {            ;
+        render() {           
             return (<ValidationContext.Consumer>
                         {context => <IsValid {...this.props} context={context} />}
                     </ValidationContext.Consumer>

@@ -14,7 +14,7 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
     
     const options = Object.assign({}, defaultOptions, specifiedOptions);
 
-    const validate = (props, state) => {    
+    const validate = (props) => {    
 
         const value = props[options.propertyName];
 
@@ -68,14 +68,17 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
             this.valid = false;
         
-            this.state = {
+            const state = {
                 valid: false,
                 pending: false,
                 errorRule: null,
                 errorMessage: null,
-                rules: [],
-                value: null
-            }            
+                rules: props.rules || [],
+                value: props[options.propertyName]
+            }
+            
+            this.state = {...state, ...validate(props)};
+            this.valid = this.state.valid;
         }
         
 
@@ -83,11 +86,11 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
             const value = props[options.propertyName];
             
-            if(!props.context || !props.context.isEnabled()) {
+            if(!props.context || !props.context.isEnabled || !props.context.isEnabled()) {
                 return null;
             }
 
-            if(!props.rules) {
+            if(!props.rules || props.rules.length === 0) {
                 return {
                     valid: true,
                     pending: false,
@@ -100,19 +103,21 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
             const rulesHaveChanged = !compareArrays(state.rules, props.rules);
             const valueHaveChanged = value !== state.value;
-            
+
             if(!rulesHaveChanged && !valueHaveChanged) {
                 return null;
             }
+
             const newState = validate(props);
             return newState;
         }
 
         componentDidUpdate() {
+
             if(this.valid === this.state.valid) {
                 return;
             }
-
+            
             this.valid = this.state.valid;
             this.props.context.update();
         }
@@ -122,12 +127,8 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
             if(context) {    
                 context.registerComponent(this);
-            }
-            
-            if(!context || context.isEnabled())
-            {
-                setTimeout(() => this.checkValid(), 0);
-            }
+            }           
+           
         }
 
         componentWillUnmount() {
