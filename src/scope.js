@@ -20,7 +20,6 @@ const scope = (WrappedComponent, options) => {
             this.subscribers = [];
         }
 
-        
         componentDidMount() {
             this.update();
         }

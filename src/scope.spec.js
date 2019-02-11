@@ -49,37 +49,58 @@ class SomeStateForm extends React.Component {
     }
 }
 
+const scopeName = 'ValidationScope';
 
 describe('scope', () => {
-    it('empty scope should be valid', () => {
+
+    describe('when scope is empty', () => {
         const wrapper = mount(<SomeForm />);
-        expect(wrapper.find('ValidationScope').instance().valid).to.be.true;
-    })
+        const scope = wrapper.find(scopeName).instance();
+        it('empty scope should be valid', () => {
+            expect(scope.valid).to.be.true;
+        })
+    });
     
-    it('scope with components without rule should be valid', () => {
+    describe('when scope contains components without rules', () => {
         const wrapper = mount(<SomeForm><SomeInput /></SomeForm>);
-        expect(wrapper.find('ValidationScope').instance().valid).to.be.true;
+        const scope = wrapper.find(scopeName).instance();
+        it('should result in valid scope', () => {
+            expect(scope.valid).to.be.true;
+        });
     })
    
-    it('scope with valid components should be valid', () => {
+    describe('when scope contains a component that is valid', () => {
         const wrapper = mount(<SomeForm><SomeInput value="foo" onChange={f => f} rules={[required]} /></SomeForm>);        
-        expect(wrapper.find('ValidationScope').instance().valid).to.be.true;
-    })
-
-    it('scope with invalid component should be invalid', () => {
+        const scope = wrapper.find(scopeName).instance();
+           
+        it('should result in valid scope', () => {
+            expect(scope.valid).to.be.true;
+        });
+    });
+    
+    describe('when scope contains a component that is invalid', () => {
         const wrapper = mount(<SomeForm><SomeInput value="" onChange={f => f} rules={[required]} /></SomeForm>);        
-        expect(wrapper.find('ValidationScope').instance().valid).to.be.false;
-    })
+        const scope = wrapper.find(scopeName).instance();
+           
+        it('should result in invalid scope', () => {
+            expect(scope.valid).to.be.false;
+        });
+    });
 
-    it('scope state is updated when component validation changes', () => {
+    describe('when all components changes to valid', () => {
         const wrapper = mount(<SomeStateForm />);
-        const validation = wrapper.find("ValidationScope").instance();
+        const scope = wrapper.find(scopeName).instance();
         const form = wrapper.find("SomeStateForm");
 
-        expect(validation.valid).to.be.false;    
+        const originalValidationState = scope.valid;
         form.setState({ value: "Some value"});
-        expect(validation.valid).to.be.true; 
-    })
+    
+        it('should change scope to valid', () => {
+            expect(originalValidationState).to.be.false;
+            expect(scope.valid).to.be.true; 
+        });
+    });
+    
 
    
 })

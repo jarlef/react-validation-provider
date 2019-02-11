@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Layout from './layout';
-import { isFunction, compareItems, compareArrays } from './utils';
 import ValidationContext from './context';
+
+import { isFunction, compareArrays } from './utils';
+import Layout from './layout';
 
 let defaultOptions = {
     custom: false,
@@ -59,6 +60,7 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
     }
 
     class ValidationComponent extends React.Component {        
+        
         static propTypes = {
             rules: PropTypes.array
         };
@@ -84,12 +86,12 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
         static getDerivedStateFromProps(props, state) {          
 
-            const value = props[options.propertyName];
-            
             if(!props.context || !props.context.isEnabled || !props.context.isEnabled()) {
                 return null;
             }
 
+            const value = props[options.propertyName];           
+            
             if(!props.rules || props.rules.length === 0) {
                 return {
                     valid: true,
@@ -102,24 +104,27 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
             }
 
             const rulesHaveChanged = !compareArrays(state.rules, props.rules);
-            const valueHaveChanged = value !== state.value;
+            const valueHasChanged = value !== state.value;
 
-            if(!rulesHaveChanged && !valueHaveChanged) {
+            // no state change
+            if(!rulesHaveChanged && !valueHasChanged) {
                 return null;
             }
 
-            const newState = validate(props);
-            return newState;
+            return validate(props);
         }
 
         componentDidUpdate() {
-
             if(this.valid === this.state.valid) {
                 return;
             }
             
             this.valid = this.state.valid;
-            this.props.context.update();
+
+            const { context } = this.props;
+            if(context) { 
+                context.update();
+            }
         }
 
         componentDidMount() {    
@@ -128,7 +133,6 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
             if(context) {    
                 context.registerComponent(this);
             }           
-           
         }
 
         componentWillUnmount() {
@@ -140,7 +144,7 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
         }
 
         checkValid() {
-            const stateChange = validate(this.props, this.state);
+            const stateChange = validate(this.props);
             this.valid = stateChange.valid;
             if(stateChange) {
                 this.setState(stateChange);
@@ -165,7 +169,6 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
                     <WrappedComponent {...componentProps} />
                 </Layout>
             );
-            
         }
     };
 
