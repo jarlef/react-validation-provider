@@ -3,11 +3,11 @@ import ValidationContext from './context';
 
 export const isValid = (WrappedComponent) => {
     
-    class IsValid extends React.Component {
+    class IsValidComponent extends React.Component {
 
         constructor(props) {
             super(props);
-            this.isValid = false;
+            this.state = { valid: false };
         }
 
         componentDidMount() {          
@@ -26,24 +26,20 @@ export const isValid = (WrappedComponent) => {
             this.props.context.unregisterSubscriber(this);            
         }
 
-        setValid(isValid) {
-            const changed = isValid !== this.isValid;
-            this.isValid = isValid;     
-            if(changed) {
-                this.forceUpdate();
-            }
+        setValid(valid) {
+            this.setState({ valid });
         }
 
         render() {            
-            return (<WrappedComponent {...this.props} isValid={this.isValid} />);
+            return (<WrappedComponent {...this.props} isValid={this.state.valid} />);
         }
     }
 
-    return class IsValidProxy extends React.Component {
+    return class ContextWrapper extends React.Component {
 
         render() {           
             return (<ValidationContext.Consumer>
-                        {context => <IsValid {...this.props} context={context} />}
+                        {context => <IsValidComponent {...this.props} context={context} />}
                     </ValidationContext.Consumer>
             );
         }

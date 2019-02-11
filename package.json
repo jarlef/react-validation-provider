@@ -11,7 +11,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "test": "mocha src/**/*.spec.js -r @babel/register -r jsdom-global/register -r ./init-test.js",
-    "build": "babel src --out-dir lib",
+    "build": "npm run clean && babel src --out-dir lib --ignore 'src/**/*.spec.js'",
     "prepublish": "npm run clean && npm run build"
   },
   "repository": {
@@ -44,7 +44,8 @@
     "prop-types": "15.6.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "rimraf": "2.6.3"
+    "rimraf": "2.6.3",
+    "sinon": "^7.2.3"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
