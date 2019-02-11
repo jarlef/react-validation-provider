@@ -1,7 +1,7 @@
 import React from 'react';
 import { validate } from 'react-validation-provider';
+import { required, minLength } from 'react-validation-provider/rules';
 import TextInput from './components/TextInput';
-import { required, minimumLength } from '../../rules';
 
 const Password = validate()((props) => <input type="password" {...props} />);
 
@@ -46,7 +46,7 @@ export default class SubForm extends React.Component {
                     <label>Password:</label>
                     <Password value={this.state.password} 
                               onChange={(ev) => this.setState({ password: ev.target.value})}
-                              rules={[required, minimumLength(8, 'Password must be greater than 8 characters')]} /> 
+                              rules={[required, minLength(8, 'Password must be greater than 8 characters')]} /> 
                 </div>
             </div>              
         )

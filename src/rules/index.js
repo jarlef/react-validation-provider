@@ -8,7 +8,7 @@ import { number } from './number';
 import { regex } from './regex';
 import { required } from './required';
 
-export default {
+export {
     email,
     empty,
     max,
