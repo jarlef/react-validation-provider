@@ -10,7 +10,7 @@
   "author": "Jarle Friestad",
   "scripts": {
     "clean": "rimraf lib",
-    "test": "mocha src/**/*.spec.js --reporter spec",
+    "test": "mocha src/**/*.spec.js -r @babel/register -r jsdom-global/register -r ./init-test.js",
     "build": "babel src --out-dir lib",
     "prepublish": "npm run clean && npm run build"
   },
@@ -28,12 +28,22 @@
     "@babel/cli": "7.2.3",
     "@babel/core": "7.2.2",
     "@babel/plugin-proposal-class-properties": "7.3.0",
+    "@babel/plugin-proposal-decorators": "^7.3.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "7.3.1",
     "@babel/preset-react": "7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.3.1",
+    "chai": "^4.2.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
     "eslint": "5.13.0",
+    "jsdom": "^13.2.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "5.2.0",
     "prop-types": "15.6.2",
-    "react": "16.7.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
     "rimraf": "2.6.3"
   },
   "publishConfig": {

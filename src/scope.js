@@ -14,7 +14,7 @@ const scope = (WrappedComponent, options) => {
 
             this.options = Object.assign({}, defaultOptions, options);
             this.enabled = !this.options.manual;
-            this.isValid = true;
+            this.valid = true;
 
             this.components = [];
             this.subscribers = [];
@@ -25,12 +25,12 @@ const scope = (WrappedComponent, options) => {
             this.update();
         }
 
-        registerComponent(component) {
+        registerComponent(component) {         
             this.components.push(component);
             this.update();
         }
 
-        unregisterComponent(component) {                        
+        unregisterComponent(component) {                       
             const index = this.components.indexOf(component);
             if(index > -1) {
                 this.components.splice(index, 1);
@@ -40,7 +40,7 @@ const scope = (WrappedComponent, options) => {
 
         registerSubscriber(subscriber) {
             this.subscribers.push(subscriber);
-            subscriber.setIsValid(this.isValid);
+            subscriber.setValid(this.valid);
         }
 
         unregisterSubscriber(subscriber) {
@@ -51,8 +51,8 @@ const scope = (WrappedComponent, options) => {
         }
 
         update() { 
-            this.isValid = this.components.every(c => !!c.valid);
-            this.subscribers.forEach(s => s.setIsValid(this.isValid));              
+            this.valid = this.components.every(c => !!c.valid);
+            this.subscribers.forEach(s => s.setValid(this.valid));              
         }
 
         validate(onSuccess, onFailed) {
@@ -62,12 +62,12 @@ const scope = (WrappedComponent, options) => {
 
             this.update();
         
-            if(this.isValid && onSuccess) {
+            if(this.valid && onSuccess) {
                 onSuccess();
                 return;
             } 
 
-            if(!this.isValid && onFailed) {
+            if(!this.valid && onFailed) {
                 onFailed(this.components.filter(c => !c.valid));
             }
         } 
@@ -82,7 +82,8 @@ const scope = (WrappedComponent, options) => {
                 validate: (onSuccess, onFailed) => {
                     this.validate(onSuccess, onFailed);
                 },
-                isEnabled: () => this.enabled
+                isEnabled: () => this.enabled,
+                isValid: () => this.valid
             };
             
             return validationContext;
