@@ -86,7 +86,7 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
             const value = props[options.propertyName];
             
-            if(!props.context || !props.context.isEnabled()) {
+            if(!props.context || !props.context.isEnabled || !props.context.isEnabled()) {
                 return null;
             }
 
