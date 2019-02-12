@@ -10,9 +10,10 @@
   "author": "Jarle Friestad",
   "scripts": {
     "clean": "rimraf lib",
+    "verify": "eslint src/**",
     "test": "mocha src/**/*.spec.js -r @babel/register -r jsdom-global/register -r ./init-test.js",
-    "build": "npm run clean && babel src --out-dir lib --ignore 'src/**/*.spec.js'",
-    "prepublish": "npm run clean && npm run build"
+    "build": "babel src --out-dir lib --ignore 'src/**/*.spec.js'",
+    "prepublish": "npm run verify && npm run clean && npm run build"
   },
   "repository": {
     "type": "git",

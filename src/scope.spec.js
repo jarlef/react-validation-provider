@@ -125,22 +125,23 @@ describe('scope', () => {
       value: 'Some value'
     });
 
-    describe('when all components changes to valid', () => {
-        const wrapper = mount(<SomeStateForm />);
-        const scope = wrapper.find(scopeName).instance();
-        const form = wrapper.find("SomeStateForm");
-
-        const originalValidationState = scope.valid;
-        form.setState({ value: "Some value"});
-    
-        it('should change scope to valid', () => {
-            expect(originalValidationState).to.be.false;
-            expect(scope.valid).to.be.true; 
-        });
     it('should change scope to valid', () => {
       expect(originalValidationState).to.be.false;
       expect(validationScope.valid).to.be.true;
     });
-})
+  });
+
+  describe('when all components changes to valid', () => {
+    const wrapper = mount(<SomeStateForm />);
+    const validationScope = wrapper.find(scopeName).instance();
+    const form = wrapper.find('SomeStateForm');
+
+    const originalValidationState = validationScope.valid;
+    form.setState({ value: 'Some value' });
+
+    it('should change scope to valid', () => {
+      expect(originalValidationState).to.be.false;
+      expect(validationScope.valid).to.be.true;
+    });
   });
 });
