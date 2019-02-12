@@ -1,21 +1,21 @@
-import { email } from './email';
-import { empty } from './empty';
-import { max } from './max';
-import { maxLength } from './maxLength';
-import { min } from './min';
-import { minLength } from './minLength';
-import { number } from './number';
-import { regex } from './regex';
-import { required } from './required';
+import email from './email';
+import empty from './empty';
+import max from './max';
+import maxLength from './maxLength';
+import min from './min';
+import minLength from './minLength';
+import number from './number';
+import regex from './regex';
+import required from './required';
 
 export {
-    email,
-    empty,
-    max,
-    maxLength,
-    min,
-    minLength,
-    number,
-    regex,
-    required
-}
+  email,
+  empty,
+  max,
+  maxLength,
+  min,
+  minLength,
+  number,
+  regex,
+  required
+};

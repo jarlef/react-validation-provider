@@ -6,10 +6,9 @@ export const isObject = x => {
   return typeof x === 'object';
 };
 
-export const isString = (x) => {
-    return typeof x  === "string";
-}
-
+export const isString = x => {
+  return typeof x === 'string';
+};
 
 export const compareItems = (item1, item2) => {
   if (isFunction(item1)) {
