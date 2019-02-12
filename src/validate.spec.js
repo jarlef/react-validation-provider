@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { expect } from 'chai';
-import validate from './validate';
 
-import { mountWithContext } from './common.spec';
+import validate from './validate';
+import mountWithContext from './common.spec';
 
 const required = (message = 'Required') => {
     return {
@@ -52,16 +53,80 @@ class SomeStateForm extends React.Component {
     }
 }
 
-@validate() 
+@validate()
 class SomeInput extends React.Component {
-    render() {
-        return <input {...this.props}  />;
-    }
+  render() {
+    return <input {...this.props} />;
+  }
 }
 
 const validationComponentName = 'ValidationComponent';
 
 describe('validate', () => {
+  describe('when mounting component', () => {
+    const wrapper = mountWithContext(
+      <SomeInput value="foo" onChange={x => x} />
+    );
+    it('should register in scope', () => {
+      expect(wrapper.validationContext.registerComponent.called).to.be.true;
+    });
+
+    it('should not unregister in scope', () => {
+      expect(wrapper.validationContext.unregisterComponent.notCalled).to.be
+        .true;
+    });
+  });
+
+  describe('when unmounting component', () => {
+    const wrapper = mountWithContext(
+      <SomeInput value="foo" onChange={x => x} />
+    );
+    wrapper.unmount();
+
+    it('should unregister in scope', () => {
+      expect(wrapper.validationContext.unregisterComponent.calledOnce).to.be
+        .true;
+    });
+  });
+
+  describe('when no rules provided', () => {
+    const wrapper = mountWithContext(
+      <SomeInput value="foo" onChange={x => x} />
+    );
+
+    it('should be valid', () => {
+      const validation = wrapper.find(validationComponentName).instance();
+      expect(validation.valid).to.be.true;
+    });
+  });
+
+  describe('when component has a single rule that passes', () => {
+    const wrapper = mountWithContext(
+      <SomeInput value="some value" rules={[required]} onChange={x => x} />
+    );
+    const validation = wrapper.find(validationComponentName).instance();
+
+    it('should be valid', () => {
+      expect(validation.valid).to.be.true;
+    });
+  });
+
+  describe('when component has a single rule that fails', () => {
+    const wrapper = mountWithContext(
+      <SomeInput value="" rules={[required]} onChange={x => x} />
+    );
+    const validation = wrapper.find(validationComponentName).instance();
+
+    it('should be valid', () => {
+      expect(validation.valid).to.be.false;
+    });
+  });
+
+  describe('when component has a combination of passing and failing rules', () => {
+    const wrapper = mountWithContext(
+      <SomeInput value="foo" rules={[required, isNotFoo]} onChange={x => x} />
+    );
+    const validation = wrapper.find(validationComponentName).instance();
 
     describe("when mounting component", () => {
         const wrapper = mountWithContext(<SomeInput value="foo" onChange={x => x} />);
@@ -229,4 +294,5 @@ describe('validate', () => {
             expect(wrapper.validationContext.update.notCalled).to.be.true;
         });
     });
+})
 })

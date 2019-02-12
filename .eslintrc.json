@@ -1,0 +1,25 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "prettier",
+    "prettier/react"
+  ],
+  "plugins": [
+    "prettier",
+    "chai-friendly"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error"
+    ],
+    "no-unused-expressions": 0,
+    "chai-friendly/no-unused-expressions": 2,
+    "react/jsx-filename-extension": 0,
+    "react/forbid-prop-types": 0,
+    "react/no-multi-comp": 0
+  },
+  "env": {
+    "mocha": true
+  }
+}

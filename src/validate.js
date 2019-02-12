@@ -6,9 +6,9 @@ import { isFunction, compareArrays } from './utils';
 import Layout from './internal/layout';
 
 let defaultOptions = {
-    custom: false,
-    propertyName: "value",
-    layout: Layout
+  custom: false,
+  propertyName: 'value',
+  layout: Layout
 };
 
 const evaluate = (WrappedComponent, specifiedOptions) => {    
@@ -68,15 +68,67 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
             }
         };
 
-       
-        return updateState(valid, pending, !valid ? rule : null, !valid ? actualRule : null); 
+    return {
+      valid,
+      pending,
+      errorMessage,
+      errorRule: errorMessage ? rule : null
+    };
+  };
+
+  class ValidationComponent extends React.Component {
+    static propTypes = {
+      context: PropTypes.object.isRequired,
+      rules: PropTypes.array
+    };
+
+    static defaultProps = {
+      rules: []
+    };
+
+    constructor(props) {
+      super(props);
+
+      this.valid = false;
+
+      const state = {
+        valid: false,
+        pending: false,
+        errorRule: null,
+        errorMessage: null,
+        rules: props.rules || [],
+        value: props[options.propertyName]
+      };
+
+      this.state = {
+        ...state,
+        ...validate(props)
+      };
+      const { valid } = this.state;
+      this.valid = valid;
     }
 
-    class ValidationComponent extends React.Component {        
-        
-        static propTypes = {
-            rules: PropTypes.array
+    static getDerivedStateFromProps(props, state) {
+      if (
+        !props.context ||
+        !props.context.isEnabled ||
+        !props.context.isEnabled()
+      ) {
+        return null;
+      }
+
+      const value = props[options.propertyName];
+
+      if (!props.rules || props.rules.length === 0) {
+        return {
+          valid: true,
+          pending: false,
+          errorRule: null,
+          errorMessage: null,
+          rules: props.rules || [],
+          value
         };
+      }
 
         constructor(props) {
             super(props);           
@@ -141,66 +193,96 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
             }
         }
 
-        componentDidMount() {    
-            const { context } = this.props;
+      // no state change
+      if (!rulesHaveChanged && !valueHasChanged) {
+        return null;
+      }
 
-            if(context) {    
-                context.registerComponent(this);
-            }           
-        }
-
-        componentWillUnmount() {
-            const { context } = this.props;
-
-            if(context) {            
-                context.unregisterComponent(this);
-            }
-        }
-
-        checkValid() {
-            const stateChange = validate(this.props);
-            this.valid = stateChange.valid;
-            if(stateChange) {
-                this.setState(stateChange);
-            }
-        }
-
-        render() {
-
-            const { rules, ...componentProps } = this.props;
-            const validation = { rules, valid: this.state.valid, pending: this.state.pending, errorMessage: this.state.errorMessage };
-            
-            if(options.custom) {
-                return (
-                    <WrappedComponent componentProps={componentProps} validation={validation} />
-                )
-            }
-
-            const Layout = options.layout; 
-
-            return (
-                <Layout {...validation}>
-                    <WrappedComponent {...componentProps} />
-                </Layout>
-            );
-        }
-    };
-
-    return class ContextWrapper extends React.Component {
-
-        render() {            
-            return (<ValidationContext.Consumer>
-                        {context => <ValidationComponent {...this.props} context={context} />}
-                    </ValidationContext.Consumer>
-            );
-        }
+      return validate(props);
     }
+
+    componentDidMount() {
+      const { context } = this.props;
+
+      if (context) {
+        context.registerComponent(this);
+      }
+    }
+
+    componentDidUpdate() {
+      const { valid } = this.state;
+      if (this.valid === valid) {
+        return;
+      }
+
+      this.valid = valid;
+
+      const { context } = this.props;
+      if (context) {
+        context.update();
+      }
+    }
+
+    componentWillUnmount() {
+      const { context } = this.props;
+
+      if (context) {
+        context.unregisterComponent(this);
+      }
+    }
+
+    checkValid() {
+      const stateChange = validate(this.props);
+      this.valid = stateChange.valid;
+      if (stateChange) {
+        this.setState(stateChange);
+      }
+    }
+
+    render() {
+      const { rules, ...componentProps } = this.props;
+      const { valid, pending, errorMessage } = this.state;
+      const validation = {
+        rules,
+        valid,
+        pending,
+        errorMessage
+      };
+
+      if (options.custom) {
+        return (
+          <WrappedComponent
+            componentProps={componentProps}
+            validation={validation}
+          />
+        );
+      }
+
+      const LayoutWrapper = options.layout;
+
+      return (
+        <LayoutWrapper {...validation}>
+          <WrappedComponent {...componentProps} />
+        </LayoutWrapper>
+      );
+    }
+  }
+
+  return props => {
+    return (
+      <ValidationContext.Consumer>
+        {context => <ValidationComponent {...props} context={context} />}
+      </ValidationContext.Consumer>
+    );
+  };
 };
 
-export const setDefaultValidateOptions = (options) => {
-    defaultOptions = Object.assign({}, defaultOptions, options);
-}
+export const setDefaultValidateOptions = options => {
+  defaultOptions = Object.assign({}, defaultOptions, options);
+};
 
-export default (options = {}) => {
-    return (WrappedComponent) =>  evaluate(WrappedComponent, options)
-}
+const validate = (options = {}) => {
+  return WrappedComponent => wrapper(WrappedComponent, options);
+};
+
+export default validate;

@@ -1,20 +1,26 @@
 import React from 'react';
 import { expect } from 'chai';
 import isValid from './isValid';
+import mountWithContext from './common.spec';
 
-import { mountWithContext } from './common.spec';
-
-@isValid() 
+@isValid()
 class SomeContainer extends React.Component {
-    render() {
-        return null;
-    }
+  render() {
+    return null;
+  }
 }
 
 const isValidComponentName = 'IsValidComponent';
 const containerName = 'SomeContainer';
 
 describe('isValid', () => {
+  describe('when mounting component', () => {
+    const wrapper = mountWithContext(<SomeContainer />);
+    const container = wrapper.find(CONTAINER_NAME);
+
+    it('should register subscriber', () => {
+      expect(wrapper.validationContext.registerSubscriber.called).to.be.true;
+    });
 
     describe('when mounting component', () => {
         
@@ -52,4 +58,5 @@ describe('isValid', () => {
             expect(container.props().isValid).to.be.true;
         });
     });
-})
+  });
+});
