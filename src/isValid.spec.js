@@ -11,15 +11,15 @@ class SomeContainer extends React.Component {
     }
 }
 
-const IS_VALID_COMPONENT_NAME = 'IsValidComponent';
-const CONTAINER_NAME = 'SomeContainer';
+const isValidComponentName = 'IsValidComponent';
+const containerName = 'SomeContainer';
 
 describe('isValid', () => {
 
     describe('when mounting component', () => {
         
         const wrapper = mountWithContext(<SomeContainer/>);
-        const container = wrapper.find(CONTAINER_NAME);
+        const container = wrapper.find(containerName);
             
         it('should register subscriber', () => {
             expect(wrapper.validationContext.registerSubscriber.called).to.be.true;
@@ -45,9 +45,9 @@ describe('isValid', () => {
 
     describe('when receiving new valid state', () => {
         const wrapper = mountWithContext(<SomeContainer/>);
-        wrapper.find(IS_VALID_COMPONENT_NAME).instance().setValid(true);
+        wrapper.find(isValidComponentName).instance().setValid(true);
         wrapper.update();
-        const container = wrapper.find(CONTAINER_NAME);
+        const container = wrapper.find(containerName);
         it('should forward validation status to child component', () => {
             expect(container.props().isValid).to.be.true;
         });

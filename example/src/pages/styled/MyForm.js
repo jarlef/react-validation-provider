@@ -1,10 +1,9 @@
 import React from 'react';
 import { scope, isValid } from 'react-validation-provider';
+import { required, email } from 'react-validation-provider/rules';
 
 import TextInput from './components/TextInput';
 import Submit from './components/Submit';
-import { required, email } from '../../rules';
-
 @scope({ manual: true })
 @isValid()
 class MyForm extends React.Component {

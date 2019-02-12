@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ValidationContext from './context';
 
 import { isFunction, compareArrays } from './utils';
-import Layout from './layout';
+import Layout from './internal/layout';
 
 let defaultOptions = {
     custom: false,
@@ -34,6 +34,10 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
                     actualRule = rule;
                 }
                 
+                if((value === undefined || value === null) && !actualRule.handlesNull) {
+                    break;
+                }
+
                 const result = !!actualRule.validate(value);                   
                 valid = !!result;                
                 
@@ -45,10 +49,19 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
         
         const updateState = (valid, pending, rule, actualRule) => {           
-            const errorMessage = !valid && !pending ? actualRule.hint(value) : null;
-
+            let hint = !valid && !pending ? actualRule.hint : null;
+            let errorMessage = null;
+            if(hint) {
+                if(isFunction(hint)) {
+                    errorMessage = hint(value);
+                } else {
+                    errorMessage = hint;
+                }
+            }
+            
             return {
                 valid,
+                rules: props.rules || [],
                 pending,
                 errorMessage,
                 errorRule: errorMessage ? rule : null
@@ -67,20 +80,21 @@ const evaluate = (WrappedComponent, specifiedOptions) => {
 
         constructor(props) {
             super(props);           
-
-            this.valid = false;
         
-            const state = {
-                valid: false,
+            this.state = {
+                valid: true,
                 pending: false,
                 errorRule: null,
                 errorMessage: null,
                 rules: props.rules || [],
                 value: props[options.propertyName]
             }
-            
-            this.state = {...state, ...validate(props)};
             this.valid = this.state.valid;
+            
+            if(props.rules && props.rules.length > 0) {
+                this.state = {...this.state, ...validate(props)};
+                this.valid = this.state.valid;
+            }
         }
         
 

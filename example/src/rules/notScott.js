@@ -1,7 +1,7 @@
-export const required = (message = 'Required') => {
+export const notScott = (message = 'You cannot be scott') => {
     return {
         validate: value => {
-            return !!value.trim();
+            return value.toLowerCase() !== "scott";
         },
         hint: () => {
             return message;

@@ -1,11 +1,11 @@
 import React from 'react';
 import { scope, isValid } from 'react-validation-provider';
-
+import { required, email } from 'react-validation-provider/rules';
 import TextInput from './components/TextInput';
 import SelectBox from './components/SelectBox';
 import Submit from './components/Submit';
-import { required, email } from '../../rules';
-
+import { notScott } from '../../rules/notScott'; //custom rules
+console.log(required);
 import SubForm from './SubForm';
 
 @scope({ manual: false })
@@ -35,7 +35,7 @@ class MyForm extends React.Component {
                     <label>Name:</label>
                     <TextInput value={this.state.name} 
                             onChange={(ev) => this.setState({name: ev.target.value})}
-                            rules={[required('Name is required')]} />
+                            rules={[required('Name is required'), notScott]} />
                 </div>
 
 

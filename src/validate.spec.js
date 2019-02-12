@@ -4,8 +4,9 @@ import validate from './validate';
 
 import { mountWithContext } from './common.spec';
 
-export const required = (message = 'Required') => {
+const required = (message = 'Required') => {
     return {
+        handlesNull: true,
         validate: value => {
             return value != null && !!value.trim();
         },
@@ -15,10 +16,19 @@ export const required = (message = 'Required') => {
     };
 };
 
-export const isNotFoo = (message = 'No foo allowed') => {
+const alwaysInvalid = (message = 'invalid') => {
+    return {
+        validate: () => { return false },
+        hint: () => {
+            return message;
+        }
+    };
+};
+
+const isNotFoo = (message = 'No foo allowed') => {
     return {
         validate: value => {
-            return !value || value.toLowerCase() !== "foo";
+            return value.toLowerCase() !== "foo";
         },
         hint: () => {
             return message;
@@ -30,13 +40,14 @@ class SomeStateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: props.value || ''
+            value: props.value || '',
+            rules: props.rules || [],
         };
     }
     render() {
         return (
             <div className="form">
-                <SomeInput value={this.state.value} onChange={e => this.setState({ value: e.target.value })} rules={[required]} />
+                <SomeInput value={this.state.value} onChange={e => this.setState({ value: e.target.value })} rules={this.state.rules} />
             </div>);
     }
 }
@@ -94,7 +105,7 @@ describe('validate', () => {
         const wrapper = mountWithContext(<SomeInput value="" rules={[required]} onChange={x => x} />);
         const validation = wrapper.find(validationComponentName).instance();
          
-        it('should be valid', () => {
+        it('should be invalid', () => {
             expect(validation.valid).to.be.false;    
         });
     });
@@ -108,6 +119,25 @@ describe('validate', () => {
         });
     });
 
+    describe('when value is null and rule does not handle null', () => {
+        
+        const wrapper = mountWithContext(<SomeInput value={null} rules={[alwaysInvalid]} onChange={x => x} />);
+        const validation = wrapper.find(validationComponentName).instance();
+         
+        it('should not invoke rule', () => {
+            expect(validation.valid).to.be.true;    
+        });
+    });
+
+    describe('when value is null and rule handles null', () => {
+        const wrapper = mountWithContext(<SomeInput value={null} rules={[required]} onChange={x => x} />);
+        const validation = wrapper.find(validationComponentName).instance();
+         
+        it('should invoke rule', () => {
+            expect(validation.valid).to.be.false;    
+        });
+    });
+
     describe('when component has a multiple passing rules', () => {
         const wrapper = mountWithContext(<SomeInput value="bar" rules={[required, isNotFoo]} onChange={x => x} />);
         const validation = wrapper.find(validationComponentName).instance();
@@ -116,9 +146,38 @@ describe('validate', () => {
             expect(validation.valid).to.be.true;    
         });
     });
+
+    describe('when adding rules', () => {
+        const wrapper = mountWithContext(<SomeStateForm value="foo" rules={[required]} />);
+        const validation = wrapper.find(validationComponentName).instance();
+        const originalValidState = validation.valid;
+        
+        const form = wrapper.find("SomeStateForm");
+        form.setState({ rules: [required, isNotFoo]});
+  
+        it('should trigger validation', () => {
+            expect(originalValidState).to.be.true;
+            expect(validation.valid).to.be.false; 
+        });
+    });
+
+    describe('when removing rules', () => {
+        const wrapper = mountWithContext(<SomeStateForm value="foo" rules={[required, isNotFoo]} />);
+        const validation = wrapper.find(validationComponentName).instance();
+        const originalValidState = validation.valid;
+        
+        const form = wrapper.find("SomeStateForm");
+        form.setState({ rules: [required]});
+  
+        it('should trigger validation', () => {
+            expect(originalValidState).to.be.false;
+            expect(validation.valid).to.be.true; 
+        });
+    });
+
     
     describe('when value prop changes to valid state', () => {
-        const wrapper = mountWithContext(<SomeStateForm />);
+        const wrapper = mountWithContext(<SomeStateForm rules={[required]} />);
         const validation = wrapper.find(validationComponentName).instance();
         const form = wrapper.find("SomeStateForm");
 
@@ -136,7 +195,7 @@ describe('validate', () => {
     });
 
     describe('when value prop changes to invalid state', () => {
-        const wrapper = mountWithContext(<SomeStateForm value="foo" />);
+        const wrapper = mountWithContext(<SomeStateForm value="foo" rules={[required]} />);
         const validation = wrapper.find(validationComponentName).instance();
         const form = wrapper.find("SomeStateForm");
 
@@ -154,7 +213,7 @@ describe('validate', () => {
     });
 
     describe('when value prop does not change validation state', () => {
-        const wrapper = mountWithContext(<SomeStateForm value="foo" />);
+        const wrapper = mountWithContext(<SomeStateForm value="foo" rules={[required]} />);
         const validation = wrapper.find(validationComponentName).instance();
         const form = wrapper.find("SomeStateForm");
 
