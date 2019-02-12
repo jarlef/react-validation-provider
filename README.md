@@ -13,6 +13,10 @@ Non-intrusive validation library for [React](https://facebook.github.io/react/).
 | React      | >= 16.3.0 |
 | Prop-Types | >= 15.6.1 |
 
+## Changelog
+
+[View changelog](./changelog.md)
+
 ## Installation
 
 ```bash
