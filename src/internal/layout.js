@@ -2,21 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class Layout extends React.PureComponent {
+  static propTypes = {
+    valid: PropTypes.bool.isRequired,
+    children: PropTypes.any,
+    errorMessage: PropTypes.string
+  };
 
-    static propTypes = {
-        valid: PropTypes.bool,
-        errorMessage: PropTypes.string
-    }
-    render() {       
-        const error = !this.props.valid ? ( <div className="form-element-error">
-                                                {this.props.errorMessage}
-                                            </div>
-                                        ) : ( <div /> ); 
-        return (
-            <div>
-                {this.props.children}
-                {error}
-            </div>
-        );
-    }
+  static defaultProps = {
+    errorMessage: null,
+    children: null
+  };
+
+  renderError() {
+    const { errorMessage } = this.props;
+    return <div className="form-element-error">{errorMessage}</div>;
+  }
+
+  render() {
+    const { valid, children } = this.props;
+    const error = !valid ? this.renderError() : null;
+
+    return (
+      <div>
+        {children}
+        {error}
+      </div>
+    );
+  }
 }
