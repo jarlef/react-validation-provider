@@ -1,12 +1,8 @@
 # React Validation Provider
 
-Non-intrusive validation library for [React](https://facebook.github.io/react/).
+Non-intrusive validation library for [React](https://facebook.github.io/react/)
 
-[![npm version](https://badge.fury.io/js/react-validation-provider.svg)](https://badge.fury.io/js/react-validation-provider)
-
-[![Build Status](https://travis-ci.org/jarlef/react-validation-provider.svg?branch=master)](https://travis-ci.org/jarlef/react-validation-provider)
-
-[![Known Vulnerabilities](https://snyk.io/test/github/jarlef/react-validation-provider/badge.svg)](https://snyk.io/test/github/jarlef/react-validation-provider)
+[![npm version](https://badge.fury.io/js/react-validation-provider.svg)](https://www.npmjs.com/package/react-validation-provider) ![downloads](https://img.shields.io/npm/dt/react-validation-provider.svg?style=popout) [![Build Status](https://travis-ci.org/jarlef/react-validation-provider.svg?branch=master)](https://travis-ci.org/jarlef/react-validation-provider) [![Known Vulnerabilities](https://snyk.io/test/github/jarlef/react-validation-provider/badge.svg)](https://snyk.io/test/github/jarlef/react-validation-provider)
 
 ## Requirements
 
