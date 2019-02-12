@@ -15,7 +15,7 @@ Non-intrusive validation library for [React](https://facebook.github.io/react/).
 
 ## Changelog
 
-[View changelog](./changelog.md)
+[View changelog](./CHANGELOG.MD)
 
 ## Installation
 
