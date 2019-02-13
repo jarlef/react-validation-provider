@@ -91,13 +91,21 @@ const wrapper = (WrappedComponent, specifiedOptions) => {
         value: props[options.propertyName]
       };
 
-      if (props.rules && props.rules.length > 0) {
+      if (
+        props.rules &&
+        props.rules.length > 0 &&
+        props.context &&
+        props.context.isEnabled &&
+        props.context.isEnabled()
+      ) {
         this.state = {
           ...state,
           ...validate(props)
         };
         const { valid } = this.state;
         this.valid = valid;
+      } else {
+        this.state = state;
       }
     }
 
