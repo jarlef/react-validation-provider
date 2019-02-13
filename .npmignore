@@ -3,3 +3,4 @@ jsconfig.json
 src/
 example/
 *.spec.js
+init-test.js
