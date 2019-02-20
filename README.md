@@ -108,7 +108,7 @@ import { scope, isValid } from 'react-validation-provider';
 import TextInput from './my-test-input';
 
 @scope() // the validation boundary
-@isValid // inject the result (props.isValid)
+@isValid() // inject the result (props.isValid)
 export default class MyForm extends React.Component {
 
   state = {
