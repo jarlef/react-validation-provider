@@ -2,7 +2,8 @@
   "name": "react-validation-provider-demo",
   "version": "0.0.1",
   "scripts": {
-    "start": "parcel index.html --no-autoinstall"
+    "start": "parcel -d build/dev --no-autoinstall index.html",
+    "build": "parcel build -d build/dist --no-autoinstall index.html"
   },
   "license": "MIT",
   "devDependencies": {

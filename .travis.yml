@@ -1,11 +1,23 @@
 language: node_js
 node_js:
-- '10'
+  - "10"
+install:
+  - sh install.sh
+script:
+  - sh build.sh
 deploy:
-  skip_cleanup: true
-  provider: npm
-  email: jarle.friestad@gmail.com
-  api_key: ${NPM_TOKEN}
-  on:
-    branch: master
-    tags: false
+  - provider: npm
+    skip_cleanup: true
+    api_key: ${NPM_TOKEN}
+    email: ${NPM_USER}
+    on:
+      branch: master
+      tags: false
+  - provider: pages
+    skip-cleanup: true
+    github-token: ${GITHUB_TOKEN}
+    local-dir: example/build/dist
+    keep-history: true
+    on:
+      branch: master
+      tags: false
