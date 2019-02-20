@@ -20,7 +20,7 @@
     "url": "https://github.com/jarlef/react-validation-provider.git"
   },
   "homepage": "https://github.com/jarlef/react-validation-provider",
-  "license": "ISC",
+  "license": "MIT",
   "peerDependencies": {
     "react": ">= 16.3.0",
     "prop-types": ">= 15.6.1"
