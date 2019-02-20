@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "start": "parcel -d build/dev --no-autoinstall index.html",
-    "build": "parcel build -d build/dist --no-autoinstall index.html"
+    "build": "rimraf build/dist && parcel build -d build/dist --no-autoinstall --public-url '.' index.html"
   },
   "license": "MIT",
   "devDependencies": {
@@ -13,7 +13,8 @@
     "@babel/plugin-transform-runtime": "7.2.0",
     "@babel/preset-env": "7.3.1",
     "@babel/preset-react": "7.0.0",
-    "parcel-bundler": "1.11.0"
+    "parcel-bundler": "1.11.0",
+    "rimraf": "^2.6.3"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.1",
