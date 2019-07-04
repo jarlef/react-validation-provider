@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "scripts": {
     "start": "parcel -d build/dev --no-autoinstall index.html",
-    "build": "rimraf build/dist && parcel build -d build/dist --no-autoinstall --public-url '.' index.html"
+    "build": "rimraf build/dist && parcel build -d build/dist --no-autoinstall --public-url '.' index.html",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "license": "MIT",
   "devDependencies": {
@@ -23,9 +25,11 @@
     "prop-types": "15.6.2",
     "react": "16.7.0",
     "react-dom": "16.7.0",
-    "scroll-to-element": "2.0.2"
+    "scroll-to-element": "2.0.2",
+    "snyk": "^1.189.0"
   },
   "alias": {
     "react-validation-provider": "../src"
-  }
+  },
+  "snyk": true
 }
